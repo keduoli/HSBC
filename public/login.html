@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title id='title'></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+	<meta name="apple-itunes-app" content="app-id=931370041">
+	<link id='ico' rel="shortcut icon" type="image/x-icon" href="/static/web/images/feiyun.ico">
+</head>
+<style>
+	body{
+color:#333;
+margin:0;
+}
+div{
+margin:0;
+padding:0;
+}
+.content{
+width:100%;
+background:#fff;
+text-align:center;
+height:100%;
+}
+.logo{
+display:block;
+width:264px;
+height:80px;
+margin:0 auto 80px;
+background:url(https://public.feeclouds.com/login/logo.png) no-repeat center;
+background-size:100% 100%;
+}
+@media screen and (min-height: 800px) {
+.footer{position:fixed;}
+}
+.footer{
+width:100%;
+height:230px;
+bottom:0;
+background:url(https://public.feeclouds.com/login/clound.png) no-repeat;
+background-size:100% auto;
+}
+.input{
+width:400px;
+outline:none;
+border:0;
+border-bottom:1px solid #a0a0a0;
+padding-bottom:8px;
+font-size:16px;
+}
+.group{
+margin-bottom:40px;
+}
+.btn{
+padding:6px 50px;
+color:#fff;
+background:#108ee9;
+border:0;
+font-size:17px;
+cursor:pointer;
+border-radius: 5px;
+}
+.error{
+height:25px;
+width:400px;
+color:#f04134;
+margin:0 auto;
+}
+@keyframes shake {
+from, to {
+transform: translate3d(0, 0, 0);
+}
+10%, 30%, 50%, 70%, 90% {
+transform: translate3d(-10px, 0, 0);
+}
+20%, 40%, 60%, 80% {
+transform: translate3d(10px, 0, 0);
+}
+}
+.shake {
+animation-name: shake;
+animation-duration: 1s;
+animation-fill-mode: both;
+}
+@keyframes fadeIn {
+from {
+opacity: 0;
+}
+to {
+opacity: 1;
+}
+}
+.fadeIn {
+animation-name: fadeIn;
+animation-duration: 1s;
+}
+.forget{
+width:400px;
+margin:0 auto;
+text-align:right;
+}
+.title{
+font-size:16px;
+margin-bottom:30px;
+}
+.back{
+color:#333;
+text-decoration: underline;
+font-size:12px;
+}
+.back:hover{
+color:#333;
+}
+.send-con{
+position: relative;
+width:400px;
+height:31px;
+overflow:hidden;
+margin:0 auto;
+}
+.send-code{
+padding:6px 10px;
+background:#108ee9;
+color:#fff;
+border:0;
+position: absolute;
+right:0;
+bottom:0;
+cursor:pointer;
+}
+</style>
+
+<body>
+	<div class="content">
+		<div style="padding:80px 0 100px">
+			<div style="width:400px;margin:0 auto;text-align:center;">
+				<a class="logo" href="https://www.feeclouds.com"></a>
+				<div id="login">
+					<form target="hidden_frame" class="login-form" onsubmit="return false;">
+						<input type="hidden" name="_xsrf" value="2|cb7b2c31|5c3781cbf9fec68f18a6fe0a63690a93|1543655466" />
+						<div class="group">
+							<input type="text" class="input user-email" name="username" id="username" placeholder="请输入登录邮箱" autocomplete="on" />
+							<div class="error">
+								<span style="float:left;" class="login-user-error" style="display:none;"></span>
+							</div>
+						</div>
+						<div class="group">
+							<input type="password" class="input user-password" name="password" id="password" placeholder="请输入密码" />
+							<div class="error">
+								<span style="float:left;" class="login-password" style="display:none;"></span>
+							</div>
+							<div class="forget">
+								<a href="javascript:;" class="forget-psw">忘记密码</a>
+							</div>
+							<div class="error">
+								<span style="float:left;display:none;" class="shake" id="not-ie">该应用不支持IE8及以下版本IE，请升级浏览器或换其他主流浏览器</span>
+							</div>
+						</div>
+						<button class="btn" id="login-btn" type="submit">
+							登录
+						</button>
+					</form>
+					<iframe name='hidden_frame' id="hidden_frame" style="display:none"></iframe>
+				</div>
+				<div id="forget-fist" style="display:none;">
+					<p class="title">找回密码(1/2)</p>
+					<div class="group">
+						<input type="text" class="input send-user" placeholder="请输入登录邮箱" />
+						<div class="error">
+							<span style="float:left;" class="first-email"></span>
+						</div>
+					</div>
+					<div class="group">
+						<div class="send-con">
+							<input type="password" class="input first-code" placeholder="请输入验证码" />
+							<button class="send-code">发送验证码</button>
+						</div>
+						<div class="error">
+							<span style="float:left;" class="first-code-tip"></span>
+						</div>
+					</div>
+					<button class="btn go-next" style="margin-bottom:10px;">
+						下一步
+					</button>
+					<div><a href="javascript:;" class="back">返回登录</a></div>
+				</div>
+				<div id="forget-second" style="display:none;">
+					<p class="title">找回密码(2/2)</p>
+					<div class="group">
+						<input type="text" class="input change-password-first" placeholder="请输入密码" />
+						<div class="error">
+							<span style="float:left;" class="password-first-tip"></span>
+						</div>
+					</div>
+					<div class="group">
+						<input type="password" class="input change-password-second" placeholder="请再次输入密码" />
+						<div class="error">
+							<span style="float:left;" class="password-second-tip"></span>
+						</div>
+					</div>
+					<button class="btn complete-change" style="margin-bottom:10px;">
+						完成
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="footer"></div>
+	</div>
+</body>
+<script src="https://public.feeclouds.com/homepage/js/jquery.min.js"></script>
+<script type="text/javascript">
+	window.onload = function () {
+		if (window.location.href.indexOf('fapiao.crmatmobile') > -1) {
+			$("#ico").attr({ 'href': ' ' });
+			$(".logo").css({ "background": 'url()' });
+			$("#title").text('软素发票');
+		} else {
+			$("#title").text('费耘');
+		}
+		//登录
+		var apiUrl = window.location.href.split('/login')[0];
+		var convertURL = function (url) {
+			if (url) {
+				var timeStamp = (new Date()).valueOf();
+				var tempArray = url.split("?");
+				var tempArrayLength = tempArray.length;
+				if (tempArrayLength == 2) {
+					url = url + "&timeStamp=" + timeStamp;
+				} else if (tempArrayLength == 1) {
+					url = url + "?timeStamp=" + timeStamp;
+				}
+				return url;
+			}
+		}
+		$("#login-btn").on('click', function () {
+			loginFnc();
+		});
+		$(document).on("keydown", function (e) {
+			e = e || event;
+			var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+			if (keyCode == 13) {
+				$("#login-btn").unbind("click")
+				loginFnc();
+			}
+		});
+		var loginFnc = function () {
+			$("#login-btn").unbind("click")
+			var user = $(".user-email").val();
+			var psw = $(".user-password").val();
+			if (!user) {
+				$(".login-user-error").text("请输入账号").show().addClass("shake");
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			} else if ((window.location.href.indexOf('xcar.feeclouds.com') === -1 ||window.location.href.indexOf('https://hfnf.feeclouds.com') === -1) && !/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(user)) {
+				$(".login-user-error").text("邮箱格式不正确").show().addClass("shake");
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			} else {
+				$(".login-user-error").text("").hide().removeClass("shake");
+			}
+			if (!psw) {
+				$(".login-password").text("请输入密码").show().addClass("shake");
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			} else {
+				$(".login-password").text("").hide().removeClass("shake");
+			}
+			if (navigator.appName === "Microsoft Internet Explorer" && navigator.appVersion.match(/7./i) === "7.") {
+				$("#not-ie").show();
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			}
+			if (navigator.appName === "Microsoft Internet Explorer" && navigator.appVersion.match(/8./i) === "8.") {
+				$("#not-ie").show();
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			}
+			if (navigator.appName === "Microsoft Internet Explorer" && navigator.appVersion.match(/6./i) === "6.") {
+				$("#not-ie").show();
+				$("#login-btn").on('click', function () {
+					loginFnc();
+				});
+				return;
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: convertURL(apiUrl + '/ajax/user/login'),
+				data: { un: user, pwd: psw },
+				success: function (res) {
+					if (res.code == 0) {
+						$(".login-user-error").text("").hide().removeClass("shake");
+						$(".login-password").text("").hide().removeClass("shake");
+						window.location.assign("/home");
+					} else {
+						$(".login-password").text(res.msg).show().addClass("shake");
+						$("#login-btn").on('click', function () {
+							loginFnc();
+						});
+					}
+				},
+				error: function (res) {
+					$(".login-password").text(res.msg).show().addClass("shake");
+					$("#login-btn").on('click', function () {
+						loginFnc();
+					});
+				}
+			})
+		};
+		//忘记密码
+		$(".forget-psw").on("click", function () {
+			$("#login").hide();
+			$("#forget-fist").show().addClass("fadeIn");
+		});
+		//发送验证码
+		var canSend = true;
+		var time = 120;
+		$(".send-code").on("click", function () {
+			var user = $(".send-user").val();
+			if (!user) {
+				$(".first-email").text("请输入邮箱").show().addClass("shake"); return;
+			} else if ((window.location.href.indexOf('xcar.feeclouds.com') === -1 ||window.location.href.indexOf('https://hfnf.feeclouds.com') === -1) &&user.indexOf("@") == -1) {
+				$(".first-email").text("邮箱格式不正确").show().addClass("shake"); return;
+			} else {
+				$(".first-email").text("").hide().removeClass("shake");
+			}
+			if (canSend) {
+				canSend = false;
+				$(".send-code").text('重发 (' + time + ')');
+				var timer = setInterval(
+					function () {
+						time--;
+						$(".send-code").text('重发 (' + time + ')');
+						if (time == 0) {
+							clearInterval(timer);
+							timer = null;
+							time = 120;
+							canSend = true;
+							$(".send-code").text('发送验证码');
+						}
+					},
+					1000
+				);
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					url: convertURL(apiUrl + '/ajax/user/code/send'),
+					data: { username: user },
+					success: function (res) {
+						if (res.code == 0) {
+							$(".first-email").text("").hide().removeClass("shake");
+						} else {
+							$(".first-email").text(res.msg).show().addClass("shake");
+							clearInterval(timer);
+							timer = null;
+							time = 120;
+							canSend = true;
+							$(".send-code").text('发送验证码');
+						}
+					}
+				})
+			}
+		});
+		//下一步
+		var userName = '';
+		var userCode = '';
+		$(".go-next").on("click", function () {
+			var firstEmail = $(".send-user").val();
+			var firstCode = $(".first-code").val();
+			if (!firstEmail) {
+				$(".first-email").text("请输入邮箱").show().addClass("shake"); return;
+			} else {
+				$(".first-email").text("").hide().removeClass("shake");
+			}
+			if (!firstCode) {
+				$(".first-code-tip").text("请输入验证码").show().addClass("shake"); return;
+			} else {
+				$(".first-code-tip").text("").hide().removeClass("shake");
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: convertURL(apiUrl + '/ajax/user/code/verify'),
+				data: { username: firstEmail, code: firstCode },
+				success: function (res) {
+					if (res.code == 0) {
+						userName = firstEmail;
+						userCode = firstCode;
+						$(".first-code-tip").text("").hide().removeClass("shake");
+						$("#forget-fist").hide();
+						$("#forget-second").show().addClass("fadeIn");
+					} else {
+						$(".first-code-tip").text(res.msg).show().addClass("shake");
+					}
+				}
+			})
+		});
+		//完成修改
+		$(".complete-change").on("click", function () {
+			var firstPassword = $(".change-password-first").val();
+			var secondPassword = $(".change-password-second").val();
+			if (!firstPassword) {
+				$(".password-first-tip").text("请输入密码").show().addClass("shake"); return;
+			} else {
+				$(".password-first-tip").text("").hide().removeClass("shake");
+			}
+			if (!secondPassword) {
+				$(".password-second-tip").text("请再次输入密码").show().addClass("shake"); return;
+			} else {
+				$(".password-second-tip").text("").hide().removeClass("shake");
+			}
+			if (firstPassword != secondPassword) {
+				$(".password-second-tip").text("两次输入的密码不一致").show().addClass("shake"); return;
+			} else {
+				$(".password-second-tip").text("").hide().removeClass("shake");
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: convertURL(apiUrl + '/ajax/user/code/reset'),
+				data: { username: userName, code: userCode, new_password: secondPassword },
+				success: function (res) {
+					if (res.code == 0) {
+						$(".password-second-tip").text("").hide().removeClass("shake");
+						$("#forget-second").hide();
+						$("#login").show().addClass("fadeIn");
+					} else {
+						$(".password-second-tip").text(res.msg).show().addClass("shake");
+					}
+				}
+			})
+		});
+		//返回登录
+		$(".back").on("click", function () {
+			$("#forget-fist").hide();
+			$("#login").show().addClass("fadeIn");
+		})
+	}
+</script>
+
+</html>

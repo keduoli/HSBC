@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title id='title'></title>
+  <meta name="description" content="费耘">
+  <meta charset="UTF-8">
+  <link id='ico' rel="shortcut icon" type="image/x-icon" href="images/feiyun.ico">
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <main id="app"></main>
+  <div id='print-con'></div>
+  <div id='print-table-con'></div>
+</body>
+</html>
+<script src="https://public.feeclouds.com/homepage/js/jquery.min.js"></script>
+<script>
+  if(window.location.href.indexOf('fapiao.crmatmobile')>-1){
+    $("#ico").attr("href",' ');
+    $("#logo-show").css("visibility",'hidden');
+    $("#logo-show1").css("visibility",'hidden');
+    $("#title").text('软素发票');
+  }else{
+    $("#title").text('费耘');
+  }
+</script>

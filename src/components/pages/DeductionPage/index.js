@@ -1,0 +1,175 @@
+import React from 'react'
+import {NavTitle,DeductionTable,DeductionFilter,AddCallModal} from 'components'
+
+class DeductionPage extends React.Component{
+  state={
+    fpdm:'',
+    fphm:'',
+    inv_start_time:'',
+    inv_end_time:'',
+    xfmc:'',
+    page:1,
+    rec_time:'',
+    size:50,
+    order_name:'kprq',
+    order_value:'-1',
+    area:'',
+    code:"",
+    yjsj:'',
+    showInfo:false,
+    showCheck:true,
+    inv_status:'0',
+    rec_status:'',
+    rec_time:'',
+    hideDefault:false,
+    showAllCheck:false,
+    showModal:<AddCallModal cancelModal={()=>{
+                                  this.setState({showModal:''})
+                                }}
+                            getBunding={this.props.getBunding}
+                            getPhoneSend={this.props.getPhoneSend}
+                            title="绑定手机号"
+                            succModal={()=>{
+                                  this.setState({showModal:''})
+                                  this.props.getData(this.state,(res)=>{
+                                    this.setState({code:res.code})
+                                  })}}
+                                />
+  }
+  clearState = () => {
+    this.setState({
+      fpdm:'',
+      fphm:'',
+      inv_start_time:'',
+      inv_end_time:'',
+      xfmc:'',
+      page:1,
+      size:this.state.size,
+      inv_status:'0',
+      order_name:'kprq',
+      order_value:'-1',
+      rec_status:'',
+      area:'',
+      showInfo:false,
+      rec_time:'',
+      showCheck:true,
+      showAllCheck:false,
+    })
+    this.DeductionTable.clearSorter();
+  }
+  componentWillMount(){
+    this.props.getData(this.state,(res)=>{
+      this.setState({code:res.code})
+      this.props.settingsGet()
+      this.props.getWarnTime((res)=>{
+        this.setState({yjsj:res.data})
+      }) 
+    })
+  }
+  checkDeduction = () => {
+    const param = {
+      area:this.state.area,
+      fpdm:this.state.fpdm,
+      fphm:this.state.fphm,
+      xfmc:this.state.xfmc,
+      rec_status:this.state.rec_status,
+      rec_time:this.state.rec_time,
+      inv_status:this.state.inv_status,
+    }
+    if(this.state.showCheck === true){
+      this.props.deductionCheck(param,(res)=>{
+        this.DeductionTable.checkRadiuo(res.data)
+        this.setState({showCheck:false})
+      })
+    }else{
+      this.DeductionTable.clearSorter()
+      this.setState({showCheck:true})
+    }
+  }
+  render(){
+    const {deductionReceive,settingsGet,deductionConfirm,settingsFnc,confirmList,deductionList,getData,deductionLoad,deductionFnc,detailList,getDetail,settingsList,getBunding,getPhoneSend } = this.props;
+    return(
+      <div>
+        <NavTitle title="认证抵扣"
+                  submeun='发票认证'/>
+        {
+            this.state.code === 20008 ?
+            <div>
+              {this.state.showModal}
+            </div>
+            :
+            <div>
+              <DeductionFilter
+                  ref={ref=>this.filter = ref}
+                  getData={getData}
+                  state={this.state}
+                  setRadiuo={this.setRadiuo}
+                  getWarnTime={this.props.getWarnTime}
+                  clearState={this.clearState}
+                  changeKprq={(area)=>{
+                    this.setState({area,showInfo:true})
+                  }}
+                  yjsj={this.state.yjsj}
+                  deductionConfirm={deductionConfirm}
+                  confirmList={confirmList}
+                  checkInvoice={this.checkDeduction}
+                  deductionReceive={deductionReceive}
+                  settingsList={settingsList}
+                  settingsFnc={settingsFnc}
+                  showCheck={this.state.showCheck}
+                  deductionList={deductionList}
+                  deductionFnc={deductionFnc}
+                  getBunding={this.props.getBunding}
+                  getPhoneSend={this.props.getPhoneSend}
+                  showAllCheck={this.state.showAllCheck}
+                  showInfo={this.state.showInfo}
+                  setSearch={(values)=>{
+                    this.DeductionTable.clearSorter();
+                    this.setState({area:values['area'],
+                                  fpdm:values['fpdm'],
+                                  showCheck:true,
+                                  fphm:values['fphm'],
+                                  xfmc:values['xfmc'],
+                                  rec_status:values['rec_status'],
+                                  rec_time:values['rec_time'],
+                                  inv_status:values['inv_status'],
+                                  showInfo:true,
+                                  showAllCheck:values['inv_status']==='0'?true:false
+                                })
+                  }}
+              />
+              <DeductionTable
+                  state={this.state}
+                  deductionConfirm={deductionConfirm}
+                  confirmList={confirmList}
+                  deductionReceive={deductionReceive}
+                  settingsList={settingsList}
+                  deductionList={deductionList}
+                  deductionFnc={deductionFnc}
+                  settingsGet={settingsGet}
+                  collectionStop={this.props.collectionStop}
+                  clearState={this.clearState}
+                  ref={ref=>this.DeductionTable = ref}
+                  getBunding={this.props.getBunding}
+                  getPhoneSend={this.props.getPhoneSend}
+                  getDetail={getDetail}
+                  detailList={detailList}
+                  settingsFnc={settingsFnc}
+                  getData={getData}
+                  changeCheck={()=>{this.setState({showCheck:true})}}
+                  deductionLoad={deductionLoad}
+                  setOrderFnc={(name,val)=>{
+                    this.setState({order_name:name,order_value:val})
+                  }}
+                  changePage={(page)=>{
+                    this.setState({page:page})
+                  }}
+              />
+            </div>
+        }
+      </div>
+    )
+  }
+}
+
+export default DeductionPage
