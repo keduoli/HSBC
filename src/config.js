@@ -6,10 +6,10 @@ const config = {
     env: process.env.NODE_ENV || 'development',
   },
   development: {
-    apiUrl: 'http://39.98.181.11:9080'//'http://192.168.1.105:8080', 
+    apiUrl: 'http://192.168.1.21:8080'//'http://192.168.1.105:8080', 
   },
   production: {
-    apiUrl: 'http://' + window.location.href.split("://")[1].split('/')[0]
+    apiUrl:  window.location.origin
   },
 };
 

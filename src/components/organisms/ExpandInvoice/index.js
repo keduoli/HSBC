@@ -33,7 +33,7 @@ class ExpandInvoice extends React.Component{
           <div style={{display:'flex',overflow:'hidden'}}>
             <InvoiceLeft>
               {
-                (detailList.fpzl=== '04' || detailList.fpzl=== '10' || detailList.fpzl=== '01' || detailList.fpzl=== '11') &&
+                (detailList.fpzl== '04' || detailList.fpzl== '10'|| detailList.fpzl== '98'|| detailList.fpzl== '99' || detailList.fpzl== '01' || detailList.fpzl== '11') &&
                 <Invoices navList={navList} scanData={detailList} print={true}/>
               }
               {

@@ -170,7 +170,10 @@ class WaitHistoryTable extends React.Component{
 																{item.polling_time.split(' ')[1]}
 															</div>
 															<div>
-																操作人：{item.realName?item.realName:'---'}
+																操作人：
+																{item.emblem == '0' && '系统自动'}
+																{item.emblem == '1' && '定时任务'}
+																{item.emblem == '2' && <span>{item.realName?item.realName:'---'}({item.userName?item.userName:'---'})</span>}
 															</div>
 														</HistoryTitle2>
 													</div>

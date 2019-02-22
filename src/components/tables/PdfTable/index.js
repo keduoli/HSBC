@@ -64,11 +64,11 @@ class PdfTable extends React.Component{
 											<span>上传成功</span>
 										}
 										{
-											record.state == 4 &&
+											record.state == 1 &&
 											<span style={{marginRight:'25%'}}>无法识别</span>
 										}
 										{
-											(record.state == 1 || record.state == 2 || record.state == 3) &&
+											(record.state == 2 || record.state == 3) &&
 											<span>查验失败</span>
 										}
 										{
@@ -112,8 +112,12 @@ class PdfTable extends React.Component{
 				render:(text,record,index)=>{
 					return <div>
 										{
-											(text == 1 || text == 2 || text == 3) &&
+											text == 2 &&
 												<ItemSpan style={{float:'left'}}><ItemErrSpan/>查验失败</ItemSpan>
+										}
+										{
+											text == 1 &&
+												<ItemSpan style={{float:'left'}}><ItemErrSpan/>未识别到发票</ItemSpan>
 										}
 										{
 											text == 0 &&
@@ -145,7 +149,7 @@ class PdfTable extends React.Component{
 				width:'12%',
 				render:(text,record,index)=>{
 					return <div>
-
+									{record.bz}
 								</div>
 				}
 			},{
@@ -165,7 +169,7 @@ class PdfTable extends React.Component{
 										{record.state == 0 &&
 											<span>
 												<a href="javascript:;" onClick={()=>{
-													this.props.getDetailFnc(record.id);
+													this.props.getDetailFnc(record.invoiceId);
 												}}>查看详情</a>
 											</span>
 										}

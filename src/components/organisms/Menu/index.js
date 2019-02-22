@@ -62,6 +62,7 @@ export default class MenuG extends React.Component{
       collapsed: false,
       open: [],
       openKeys: [CookieJs.getCookie("openKeys")],
+      select:[],
     }
     this.rootSubmenuKeys = ['sub1', 'sub5', 'sub4', 'sub6','sub7','sub8'];
   }
@@ -71,14 +72,13 @@ export default class MenuG extends React.Component{
     })
     this.props.changeCollectionStop(!this.props.collectionStop)
   }
-  deselect = (key) =>{
+  deselect = () =>{
     this.setState({select:[]});
   }
   select = (e) => {
       if(e.key == 'home'){
         this.setState({open:[]})
       }
-      //判断是否在tab中，
       const list = this.props.tabData.list;
       let a = list.find(el=>el.key===e.key);
       let name = e.item.props.title;
@@ -146,6 +146,9 @@ export default class MenuG extends React.Component{
         openKeys: [],
       });
       CookieJs.setCookie("openKeys","");
+    }
+    if(next.tabData.activeKey!==this.props.tabData.activeKey){
+      this.setState({select:[]})
     }
   }
   componentWillMount(){
@@ -275,6 +278,12 @@ export default class MenuG extends React.Component{
                 role && (role.indexOf('supervisor') > -1 || role.indexOf('User') > -1) && 
                 <Menu.Item title='操作日志' key="log" style={{background:'#4B587B',paddingRight:0,borderLeft:"3px solid #65EBFF"}}>
                   <Links to="/log" activeClassName="router-active" style={{paddingLeft:45}}>操作日志</Links>
+                </Menu.Item>
+              }
+              {
+                role && role.indexOf('adminUser') > -1 &&
+                <Menu.Item title='账单' key="bill" style={{background:'#4B587B',paddingRight:0,borderLeft:"3px solid #65EBFF"}}>
+                  <Links to="/bill" activeClassName="router-active" style={{paddingLeft:45}}>账单</Links>
                 </Menu.Item>
               }
             </SubMenu>

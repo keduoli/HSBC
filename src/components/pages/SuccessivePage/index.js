@@ -105,6 +105,7 @@ class SuccessivePage extends React.Component{
                     <BeginDiv>按“空格”键暂停或继续</BeginDiv>
                   </div>
     },()=>{
+      console.log('1')
       document.onkeydown = (e)=>{
         if(e.keyCode === 32){
           if(this.state.canSuccessive){
@@ -264,6 +265,9 @@ class SuccessivePage extends React.Component{
           />}
           {this.state.scan && <WarningRight navList={this.props.navList}
                                             memo={this.state.memo}
+                                            cusId={this.state.cusId}
+                                            conId={this.state.conId}
+                                            ddId={this.state.ddId}
                                             getDrawdownList={getDrawdownList}
                                             getContractList={getContractList}
                                             customerList={customerList}

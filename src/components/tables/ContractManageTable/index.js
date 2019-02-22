@@ -210,7 +210,7 @@ class ContractManageTable extends React.Component{
       render:(text)=>{
         return <div>
                 {
-                  text.length>0?
+                  text&&text.length>0?
                   <div>
                   {
                     text.map((item,index)=>{

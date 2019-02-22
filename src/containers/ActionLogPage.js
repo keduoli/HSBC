@@ -11,12 +11,12 @@ const mapStateToProps = state => ({
   logList: fromData.getData(state,actions.RQ.LOG_LIST),
   navList: fromData.getData(state,actions.RQ.NAV_BAR),
   loading:fromData.getLoad(state,actions.RQ.LOG_LIST),
-  actionUserList:fromData.getData(state,actions.RQ.ACTION_USER),
+  actionUserList:fromData.getData(state,actions.RQ.LINK_USER),
   collectionStop: fromData.getCheckSecond(state,fromData.CAN_COLLECTION_STOP),
 });
 const mapDispatchToProps = dispatch => ({
   getLogList:(param) => dispatch(actions.request(actions.RQ.LOG_LIST,"/ajax/log/list",{params:param})),
-  getActionUser:() => dispatch(actions.request(actions.RQ.ACTION_USER,"/ajax/org/user/list",{})),
+  getActionUser:() => dispatch(actions.request(actions.RQ.LINK_USER,"/ajax/user/list",{})),
   getNavList: (callback) => dispatch(actions.request(actions.RQ.NAV_BAR,"/ajax/homepage",{
     success:(res)=>{
       callback?callback(res):""

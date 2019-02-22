@@ -25,6 +25,7 @@ class InvoiceFilterMake extends React.Component{
     maxMoney:'',
     minMoney:'',
     moneyOk:false,
+    exportUrl:'',
   }
   componentWillReceiveProps(){
     this.setState({state:this.props.state.state.split(',')})
@@ -97,29 +98,54 @@ class InvoiceFilterMake extends React.Component{
       maxMoney:'',
       minMoney:'',
       moneyOk:false,
+      exportUrl:'',
     })
     this.props.form.resetFields();
     this.props.clearFnc();
   };
   exportFile = () => {
-    const param = this.props.state;
-    delete param.page;
+    const { state } = this.props;
     let arr;
-    if(param.state.length>2){
-      arr = param.state.split(",");
+    if(state.state.length>2){
+      arr = state.state.split(",");
     }else{
-      arr = param.state+""
+      arr = state.state+""
     }
-    if(arr.indexOf("4")>=0 || arr.indexOf("6")>=0|| arr.indexOf("1")>=0){
-      message.error("只有已提交、已导出的发票才能导出"); return;
+    const param = {
+      size:10,
+      page:state.page,
+      state:state.state,
+      time_area:state.time_area,
+      keyword:state.keyword,
+      fpzl:state.fpzl,
+      is_success:state.is_success,
+      entry_id:state.entry_id,
+      sub_time:state.sub_time,
+      fplc:state.fplc,
+      xfmc:state.xfmc,
+      zfbz:state.zfbz,
+      create_time:state.create_time,
+      order:JSON.stringify({'order_name':state.order_name,'order_value':state.order_value}),
+      select_all:0,
+      jshj_min:state.jshj_min,
+      jshj_max:state.jshj_max,
+      department_ids:state.department_ids,
+      es_search:state.es_search,
+      cus_num:state.cus_num,
+      fpdm:state.fpdm,
+      fphm:state.fphm,
+      fkzt:state.fkzt,
+      gfmc:state.gfmc,
+      con_id:state.con_id,
+      dd_id:state.dd_id,
+      export:'1',
+    }
+    if(arr.indexOf("5")>=0 || arr.indexOf("6")>=0){
+      message.error("只有已提交的发票才能导出"); return;
     }
     this.setState({isShow:true})
-    this.props.exportAction(param,(code)=>{
-      if(code===20507){
-        return;
-      }else{
-        this.setState({isSucess:true})
-      }
+    this.props.exportAllFnc(param,(res)=>{
+      this.setState({isSucess:true,exportUrl:res})
     });
   }
   maskShow = () => {
@@ -284,8 +310,8 @@ class InvoiceFilterMake extends React.Component{
                         allowClear={true}
                         size='large'
                       >
-                        <Option key='04,11'>普通发票</Option>
-                        <Option key='01,02'>专用发票</Option>
+                        <Option key='04,11,98'>普通发票</Option>
+                        <Option key='01,02,99'>专用发票</Option>
                         <Option key='10'>电子发票</Option>
                         <Option key='14'>通行费发票</Option>
                         <Option key='03'>机动车发票</Option>
@@ -427,13 +453,13 @@ class InvoiceFilterMake extends React.Component{
                         <Select placeholder="请选择"
                                 allowClear = {true}
                                 showSearch={true}
-                                size='large'
                                 optionFilterProp='children'
+                                size='large'
                                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
                           {
                             entryUserList && entryUserList.map((item)=>{
-                              return <Option key={item.id}>{item.realName}</Option>
+                              return <Option key={item.id}>{item.realName+'('+item.userName+')'}</Option>
                             })
                           }
                         </Select>
@@ -550,8 +576,8 @@ class InvoiceFilterMake extends React.Component{
                         allowClear={true}
                         size='large'
                       >
-                        <Option key='04,11'>普通发票</Option>
-                        <Option key='01,02'>专用发票</Option>
+                        <Option key='04,11,98'>普通发票</Option>
+                        <Option key='01,02,99'>专用发票</Option>
                         <Option key='10'>电子发票</Option>
                         <Option key='14'>通行费发票</Option>
                         <Option key='03'>机动车发票</Option>
@@ -620,7 +646,7 @@ class InvoiceFilterMake extends React.Component{
           {this.state.isShow&&<InvoiceExportModal state={this.state}
                                                   Allcount={this.props.invoiceList.total}
                                                   exportFile={this.exportFile}
-                                                  exportUrl={this.props.getExportUrl}
+                                                  exportUrl={this.state.exportUrl}
                                                   closeModal={()=>this.setState({isShow:false,isSucess:false})}/>
           }
         </Form>

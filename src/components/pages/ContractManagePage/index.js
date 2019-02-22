@@ -10,6 +10,19 @@ const CloseIcon = styled(Icon)`
   cursor:pointer;
   display:inline-block;
 `;
+const RefreshBtn = styled.div`
+  display:inline-block;
+  margin-left:20px;
+`;
+const RefreshIcon = styled(Icon)`
+  cursor:pointer;
+  &:hover{
+    color:#2476f8;
+  }
+  &:active{
+    color:rgb(211,211,211);
+  }
+`;
 class ContractManagePage extends React.Component{
   state = {
     size:10,
@@ -123,23 +136,6 @@ class ContractManagePage extends React.Component{
         max_con_amount:'',
         time:'',
       })
-      const param = {
-        page:1,
-        size:10,
-        dd_id:next.setConId,
-        con_num:'',
-        cus_num:'',
-        gfmc:'',
-        xfmc:'',
-        start_con_date:'',
-        memo1:'',
-        state:'',
-        end_con_date:'',
-        order:JSON.stringify({'order_name':'','order_value':''}),
-        min_con_amount:'',
-        max_con_amount:'',
-      }
-      this.props.getContractList(param)
       this.filter&&this.filter.resetFields();
     }
   }
@@ -174,6 +170,31 @@ class ContractManagePage extends React.Component{
     this.props.setContract(false)
     this.setState({contractDetail:res,changeClassName:true,showDetail:true})
   }
+  showRefreshBtn = () => {
+    return(
+        <RefreshBtn>
+          <RefreshIcon type="sync" onClick={()=>{
+            const param = {
+              page:this.state.page,
+              size:10,
+              gfmc:this.state.gfmc,
+              con_num:this.state.con_num,
+              cus_num:this.state.cus_num,
+              start_con_date:this.state.start_con_date,
+              end_con_date:this.state.end_con_date,
+              memo1:this.state.memo1,
+              state:this.state.state,
+              xfmc:this.state.xfmc,
+              is_select_id:0,
+              order:JSON.stringify({'order_name':this.state.order_name,'order_value':this.state.order_value}),
+              min_con_amount:this.state.min_con_amount,
+              max_con_amount:this.state.max_con_amount,
+            };
+            this.props.getContractList(param);
+          }}/>
+        </RefreshBtn>
+      )
+  };
   render(){
     const { contractList,tabData,setInvId,tabChange,getInvoiceList,copyOpening,getDrawdownList,unLinkContract,linkLoading,exportContract,delFnc,linkContract,invoiceList,getContractList,addFnc,collectionStop,loading,customerList,getContractDetail,editFnc } = this.props;
     return(
@@ -183,6 +204,7 @@ class ContractManagePage extends React.Component{
           !this.state.showDetail?
           <div>
             <NavTitle title="合同管理"
+                      refreshBtn={this.showRefreshBtn}
                       submeun={this.state.showDetail&&'合同详情'}/>
             <ContractManageFilter showInfo={this.state.showInfo}
                                   searchFnc={this.searchFnc}

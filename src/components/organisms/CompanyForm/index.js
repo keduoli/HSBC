@@ -20,6 +20,13 @@ const Label = styled.p`
   margin-top:5px;
   margin-bottom:30px;
 `;
+const GroupWrap = styled.div`
+  overflow:hidden;
+`;
+const RightTab = styled.div`
+  display:inline-block;
+  margin-left:57px;
+`;
 const ComContent = styled.div`
   background:#fff;
   padding:20px;
@@ -27,13 +34,6 @@ const ComContent = styled.div`
 const LogoLabel = styled.span`
   width:85px;
   display:inline-block;
-`;
-const GroupWrap = styled.div`
-  overflow:hidden;
-`;
-const RightTab = styled.div`
-  display:inline-block;
-  margin-left:57px;
 `;
 const ScanSetCon = styled.div`
   float:left;

@@ -60,9 +60,11 @@ class InvoiceAttached extends React.Component{
     target_id:'',
     consortiumResult:false,
     memo:this.props.memo?this.props.memo:'',
-    cusId:this.props.state&&this.props.state.cusId?this.props.state.cusId:undefined,
-    conId:this.props.state&&this.props.state.conId?this.props.state.conId:undefined,
-    ddId:this.props.state&&this.props.state.ddId?this.props.state.ddId:undefined,
+    cusId:this.props.state&&this.props.state.cusId?this.props.state.cusId+'':undefined,
+    conId:this.props.state&&this.props.state.conId?this.props.state.conId+'':undefined,
+    ddId:this.props.state&&this.props.state.ddId?this.props.state.ddId+'':undefined,
+    drawdownList:[],
+    contractList:[],
   };
   handleUpload = () => {
     let memo = this.state.memo;
@@ -84,7 +86,7 @@ class InvoiceAttached extends React.Component{
     if(this.state.cusId)formData.append('cusId',this.state.cusId);
     if(this.state.conId)formData.append('conId',this.state.conId);
     if(this.props.waitConfirm){
-      formData.append('image_id',this.props.imageId);
+      formData.append('ocrId',this.props.imageId);
     }
     if(fileList.length > 0){
       fileList.forEach((file) => {
@@ -113,6 +115,15 @@ class InvoiceAttached extends React.Component{
       }else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
         obj.selectionStart = obj.selectionEnd = len;
       }
+    }
+    if(this.props.state&&this.props.state.cusId){
+      const cus_num = this.props.customerList.list.filter((el)=>el.id==this.props.state.cusId)[0].cus_num;
+      this.props.getDrawdownList({cus_num:cus_num,state:'0,1'},(res)=>{
+        this.setState({drawdownList:res.list})
+      })
+      this.props.getContractList({cus_num:cus_num,state:'0'},(res)=>{
+        this.setState({contractList:res.list})
+      })
     }
   };
   checkSecondFun = () => {
@@ -187,12 +198,17 @@ class InvoiceAttached extends React.Component{
                       showSearch
                       optionFilterProp="children"
                       placeholder='请选择关联客户'
+                      value={this.state.cusId}
                       onChange={(e)=>{
                         if(!!e){
                           this.setState({cusId:e},()=>{
                             const cus_num = customerList.list.filter((el)=>el.id==e)[0].cus_num;
-                            getDrawdownList({cus_num:cus_num,state:'0,1'})
-                            getContractList({cus_num:cus_num,state:'0'})
+                            getDrawdownList({cus_num:cus_num,state:'0,1'},(res)=>{
+                              this.setState({drawdownList:res.list})
+                            })
+                            getContractList({cus_num:cus_num,state:'0'},(res)=>{
+                              this.setState({contractList:res.list})
+                            })
                           })
                         }else{
                           this.setState({cusId:null,conId:null,ddId:null})
@@ -220,10 +236,12 @@ class InvoiceAttached extends React.Component{
                         placeholder='请选择关联合同'
                         value={this.state.conId}
                         onChange={(e)=>{
-                          this.setState({conId:e})
+                          this.setState({conId:e},()=>{
+                            this.props.showInvoiceHandle&&this.props.showInvoiceHandle()
+                          })
                         }}>
                   {
-                    contractList.list.map((item)=>{
+                    this.state.contractList.map((item)=>{
                       return <Option key={item.id}>{item.con_num}</Option>
                     })
                   }
@@ -244,10 +262,12 @@ class InvoiceAttached extends React.Component{
                       placeholder='请输入放款流水号'
                       value={this.state.ddId}
                       onChange={(e)=>{
-                        this.setState({ddId:e})
+                        this.setState({ddId:e},()=>{
+                          this.props.showInvoiceHandle&&this.props.showInvoiceHandle()
+                        })
                       }}>
                 {
-                  drawdownList.list.map((item)=>{
+                  this.state.drawdownList.map((item)=>{
                     return <Option key={item.id}>{item.sys_num}</Option>
                   })
                 }

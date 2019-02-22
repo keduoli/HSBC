@@ -41,6 +41,7 @@ let preDefaultState = {
   [actions.RQ.OCR_RETURN]:{},
   [actions.RQ.FOLDER_LIST]:{list:[]},
   [actions.RQ.FOLDER_DETAIL]:{list:[]},
+  [actions.RQ.BILL_LIST]:{list:[]},
   [actions.RQ.LOG_LIST]:{list:[]},
   [actions.RQ.ACTION_USER]:{list:[]},
   [actions.RQ.BLACKLIST_GET]:{total:0,list:[],status:null},

@@ -345,26 +345,8 @@ class SpecialCheckConMack extends React.Component{
 
   }
   setJehj = () => {
-    let jehj = this.jehj;
-    for(let i in this.state.line){
-      jehj+=Number(this.state.line[i].je)
-    }
-    this.setState({jehj:Number(jehj).toFixed(2)})
-
-    
-    let sehj = this.sehj;
-    for(let i in this.state.line){
-      sehj+=Number(this.state.line[i].se)
-    }
-    this.setState({sehj:Number(sehj).toFixed(2)})
-
-    let nosehj = this.nosehj;
-    this.setState({jshj:(jehj+sehj).toFixed(2)})
-    if(nosehj-sehj > 0.06){
-      this.setState({open:true})
-    }else{
-      this.setState({open:false})
-    }
+    let jehj = this.state.jehj;
+    let sehj = this.state.sehj;
   }
   handleSubmit = (action) => {
     this.props.form.validateFields((err, values) => {
@@ -552,7 +534,7 @@ class SpecialCheckConMack extends React.Component{
                 <Input style={{width:150}}
                        placeholder='请输入校验码'/>
               )}
-              </FormItem>
+            </FormItem>
           </HeaderLeft>
           <HeaderLeft>
             <LableCon><HaveToSpan> * </HaveToSpan>发票号码：</LableCon>
@@ -624,8 +606,6 @@ class SpecialCheckConMack extends React.Component{
                     {getFieldDecorator('gfmc',{
                       rules: [{
                         required: true, message: '名称不能为空',
-                      },{
-                        pattern: /[^<>\"\'&%\\/]{2,100}/, message: '名称不合法'
                       }]
                     })(
                       <Input placeholder="请输入名称" style={{float:'left',width:250,margin:'8px 20px 0 80px'}}/>
@@ -723,14 +703,14 @@ class SpecialCheckConMack extends React.Component{
           </div>
           <div style={{overflow:'hidden'}}>
             <EachColCon style={{display:'flex'}}>
-              <EachCol style={{width:'25%'}}><HaveToSpan> * </HaveToSpan>货物或应税劳务、服务名称</EachCol>
+              <EachCol style={{width:'25%'}}>货物或应税劳务、服务名称</EachCol>
               <EachCol style={{width:'10%'}}>规格型号</EachCol>
               <EachCol style={{width:'5%'}}>单位</EachCol>
-              <EachCol style={{width:'12%'}}><HaveToSpan> * </HaveToSpan>数量</EachCol>
-              <EachCol style={{width:'15%'}}><HaveToSpan> * </HaveToSpan>单价</EachCol>
-              <EachCol style={{width:'12%'}}><HaveToSpan> * </HaveToSpan>金额</EachCol>
-              <EachCol style={{width:'10%'}}><HaveToSpan> * </HaveToSpan>税率</EachCol>
-              <EachCol style={{borderRight:'0',flexGrow:1}}><HaveToSpan> * </HaveToSpan>税额</EachCol>
+              <EachCol style={{width:'12%'}}>数量</EachCol>
+              <EachCol style={{width:'15%'}}>单价</EachCol>
+              <EachCol style={{width:'12%'}}>金额</EachCol>
+              <EachCol style={{width:'10%'}}>税率</EachCol>
+              <EachCol style={{borderRight:'0',flexGrow:1}}>税额</EachCol>
             </EachColCon>
             <div style={{borderBottom:'1px solid #EBEBEB'}}>
               {
@@ -750,11 +730,7 @@ class SpecialCheckConMack extends React.Component{
                                           }
                                         }}/>
                               <FormItem>
-                              {getFieldDecorator(`${item.id+'hwmc'}`,{
-                                rules: [{
-                                  required: true, message: '请输入商品名称',
-                                }]
-                              })(
+                              {getFieldDecorator(`${item.id+'hwmc'}`)(
                                 <Input style={{width:'80%'}}
                                         onChange={(e)=>{
                                           this.state.line[index].hwmc = e.target.value;
@@ -785,55 +761,12 @@ class SpecialCheckConMack extends React.Component{
                             <FormItem>
                               {getFieldDecorator(`${item.id+'sl'}`,{
                                 rules: [{
-                                  required: true, message: '数量不能为空',
-                                },{
                                   pattern: /^(\d*)\.?\d{1,9}$/, message: '只能是数字(9位小数）'
                                 }]
                               })(
                               <Input onChange={(e)=>{
                                         if(e.target.value!=='' && (/^(\d*)\.?\d{1,9}$/).test(e.target.value)){
-                                          let rate;
-                                          if(this.state.line[index].slv === '1'){
-                                            rate = 0.03
-                                          }else if(this.state.line[index].slv === '5'){
-                                            rate = 0.04
-                                          }else if(this.state.line[index].slv === '6'){
-                                            rate = 0.05
-                                          }else if(this.state.line[index].slv === '7'){
-                                            rate = 0.06
-                                          }else if(this.state.line[index].slv === '8'){
-                                            rate = 0.1
-                                          }else if(this.state.line[index].slv === '9'){
-                                            rate = 0.11
-                                          }else if(this.state.line[index].slv === '0'){
-                                            rate = 0.16
-                                          }else if(this.state.line[index].slv === '$'){
-                                            rate = 0.17
-                                          }
                                           this.state.line[index].sl = e.target.value;
-                                          if(this.state.line[index].dj!==''){
-                                            this.props.form.setFieldsValue({
-                                              [`${item.id+'sl'}`]:e.target.value,
-                                              [`${item.id+'je'}`]:Number(this.state.line[index].dj*this.state.line[index].sl).toFixed(2)
-                                            })
-                                            this.state.line[index].je = Number(this.state.line[index].dj*this.state.line[index].sl).toFixed(2)
-                                            if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                              this.state.line[index].se = '0.00'
-                                            }else{
-                                                this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                            }
-                                          }else if(this.state.line[index].je!==''){
-                                            this.props.form.setFieldsValue({
-                                              [`${item.id+'sl'}`]:e.target.value,
-                                              [`${item.id+'dj'}`]:num_format(Number(this.state.line[index].je/this.state.line[index].sl))
-                                            })
-                                            this.state.line[index].dj = num_format(Number(this.state.line[index].je/this.state.line[index].sl))
-                                            if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                              this.state.line[index].se = '0.00'
-                                            }else{
-                                                this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                            }
-                                          }
                                           this.setState({})
                                         }
                                     }}/>)}
@@ -843,55 +776,12 @@ class SpecialCheckConMack extends React.Component{
                             <FormItem>
                               {getFieldDecorator(`${item.id+'dj'}`,{
                                 rules: [{
-                                  required: true, message: '单价不能为空',
-                                }, {
                                   pattern: /^(\d*)\.?\d{1,9}$/, message: '只能是数字(9位小数）'
                                 }]
                               })(
                               <Input onChange={(e)=>{
                                       if(e.target.value!=='' && (/^(\d*)\.?\d{1,9}$/).test(e.target.value)){
-                                        let rate;
-                                        if(this.state.line[index].slv === '1'){
-                                          rate = 0.03
-                                        }else if(this.state.line[index].slv === '5'){
-                                          rate = 0.04
-                                        }else if(this.state.line[index].slv === '6'){
-                                          rate = 0.05
-                                        }else if(this.state.line[index].slv === '7'){
-                                          rate = 0.06
-                                        }else if(this.state.line[index].slv === '8'){
-                                          rate = 0.1
-                                        }else if(this.state.line[index].slv === '9'){
-                                          rate = 0.11
-                                        }else if(this.state.line[index].slv === '0'){
-                                          rate = 0.16
-                                        }else if(this.state.line[index].slv === '$'){
-                                          rate = 0.17
-                                        }
                                         this.state.line[index].dj = e.target.value;
-                                        if(this.state.line[index].sl!==''){
-                                          this.props.form.setFieldsValue({
-                                            [`${item.id+'dj'}`]:e.target.value,
-                                            [`${item.id+'je'}`]:Number(this.state.line[index].dj*this.state.line[index].sl).toFixed(2)
-                                          })
-                                          this.state.line[index].je = Number(this.state.line[index].dj*this.state.line[index].sl).toFixed(2)
-                                          if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                            this.state.line[index].se = '0.00'
-                                          }else{
-                                                this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                          }
-                                        }else if(this.state.line[index].je!==''){
-                                          this.props.form.setFieldsValue({
-                                            [`${item.id+'dj'}`]:e.target.value,
-                                            [`${item.id+'sl'}`]:num_format(Number(this.state.line[index].je/this.state.line[index].dj))
-                                          })
-                                          this.state.line[index].sl = num_format(Number(this.state.line[index].je/this.state.line[index].dj))
-                                          if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                            this.state.line[index].se = '0.00'
-                                          }else{
-                                              this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                          }
-                                        }
                                       }
                                       this.setState({})
                                     }}/>)}
@@ -901,8 +791,6 @@ class SpecialCheckConMack extends React.Component{
                             <FormItem>
                               {getFieldDecorator(`${item.id+'je'}`,{
                                 rules: [{
-                                  required: true, message: '金额不能为空',
-                                }, {
                                   pattern: /^(\d*)\.?\d{1,9}$/, message: '只能是数字(9位小数）'
                                 }]
                               })(
@@ -927,28 +815,10 @@ class SpecialCheckConMack extends React.Component{
                                             rate = 0.17
                                           }
                                           this.state.line[index].je = e.target.value;
-                                          if(this.state.line[index].sl!==''){
-                                            this.props.form.setFieldsValue({
-                                              [`${item.id+'je'}`]:e.target.value,
-                                              [`${item.id+'dj'}`]:num_format(Number(this.state.line[index].je/this.state.line[index].sl))
-                                            })
-                                            this.state.line[index].dj = num_format(Number(this.state.line[index].je/this.state.line[index].sl))
-                                            if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                              this.state.line[index].se = '0.00'
-                                            }else{
+                                          if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
+                                            this.state.line[index].se = '0.00'
+                                          }else{
                                               this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                            }
-                                          }else if(this.state.line[index].dj!==''){
-                                            this.props.form.setFieldsValue({
-                                              [`${item.id+'je'}`]:e.target.value,
-                                              [`${item.id+'sl'}`]:num_format(Number(this.state.line[index].je/this.state.line[index].dj))
-                                            })
-                                            this.state.line[index].sl = num_format(Number(this.state.line[index].je/this.state.line[index].dj))
-                                            if(this.state.line[index].slv == '2' || this.state.line[index].slv == '3' || this.state.line[index].slv == '4'){
-                                              this.state.line[index].se = '0.00'
-                                            }else{
-                                              this.state.line[index].se = Number(this.state.line[index].je*rate).toFixed(2)
-                                            }
                                           }
                                         }
                                         this.setState({})
@@ -1021,14 +891,24 @@ class SpecialCheckConMack extends React.Component{
               <EachCol style={{width:'5%',borderRight:0}} />
               <EachCol style={{width:'12%',borderRight:0}} />
               <EachCol style={{width:'15%',borderRight:0}} />
-              <EachCol style={{width:'12%',borderRight:0}}><ConSpan>￥{this.state.jehj}</ConSpan></EachCol>
+              <EachCol style={{width:'12%',borderRight:0,padding:'0px 5px'}}><Input onChange={(e)=>this.setState({jehj:e.target.value})}/></EachCol>
               <EachCol style={{width:'10%',borderRight:0}}/>
-              <EachCol style={{borderRight:0,flexGrow:1}}><ConSpan>￥{this.state.sehj}</ConSpan>{this.state.open==true?<ConSpan style={{lineHeight:2,color:'#f04134'}}><ItemPointSpan/>税差超过6分钱，请手动调整</ConSpan>:''}</EachCol>
+              <EachCol style={{borderRight:0,width:'11%',padding:'0px 5px'}}><Input onChange={(e)=>this.setState({sehj:e.target.value})}/></EachCol>
             </div>
             <div style={{display:'flex',borderTop:'1px solid #EBEBEB'}}>
               <EachCol style={{width:'55%',borderRight:0}}><span style={{marginLeft:'10%',float:'left',display:'inline-block',width:'20%'}}>价税合计(大写）</span><ConSpan style={{marginLeft:15}}>{this.state.jshj!==''&&this.state.jshj!=='0.00'&&DX(this.state.jshj)}</ConSpan></EachCol>
               <EachCol style={{flexGrow:1,borderRight:0,textAlign:'left'}}><ConSpan style={{marginLeft:15}}></ConSpan></EachCol>
-              <EachCol style={{borderRight:0,width:'30%',textAlign:'left'}}>(小写）<ConSpan style={{marginLeft:15}}>{this.state.jshj}</ConSpan></EachCol>
+              <EachCol style={{borderRight:0,width:'30%',textAlign:'left',display:'flex'}}><span><HaveToSpan> * </HaveToSpan>(小写)</span>
+              <FormItem>
+              {getFieldDecorator('jshj',{
+                rules:[{
+                  required:true,message:'价税合计不能为空',
+                }]
+              })(
+                <Input style={{width:100,marginTop:3,float:'left',marginLeft:15}} onChange={(e)=>this.setState({jshj:e.target.value})}/>
+                )}
+              </FormItem>
+              </EachCol>
             </div>
           </div>
           <div style={{overflow:'hidden',display:'flex',borderTop:'1px solid #EBEBEB'}}>
@@ -1038,9 +918,12 @@ class SpecialCheckConMack extends React.Component{
               </LeftAspect>
               <RightAspect style={{borderRight:'1px solid #EBEBEB'}}>
                 <div style={{overflow:'hidden'}}>
-                  <InvoiceTitSpan>名称：</InvoiceTitSpan>
+                  <InvoiceTitSpan><HaveToSpan> * </HaveToSpan>名称：</InvoiceTitSpan>
                   <FormItem>
                     {getFieldDecorator('xfmc',{
+                      rules: [{
+                        required: true, message: '名称不能为空',
+                      }]
                     })(
                       <ConInput placeholder='请输入名称' onChange={(e)=>this.setState({gfdz:e.target.value})}/>
                     )}

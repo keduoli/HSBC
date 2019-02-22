@@ -109,8 +109,7 @@ class PollingDetailTable extends React.Component{
   };
   showPolling = () => {
 		const param = {
-      ids:this.state.selectedRowKeys.join(","),
-      polling_id:this.props.state.polling_id,
+      invoice_ids:this.state.selectedRowKeys.join(","),
     }
     this.setState({pollingWaring:<Modal title={<TitleSpan>查验提示</TitleSpan>}
                                         visible
@@ -339,19 +338,19 @@ class PollingDetailTable extends React.Component{
       title: '税额',
       key:'se',
       dataIndex: 'se',
-      render:text=><span>{text?text:'--'}</span>
+      render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
     },{
       title: '金额',
       dataIndex:'je',
       key:'je',
-      render:text=><span>{text?text:'--'}</span>
+      render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
     },{
       title: '价税合计',
       dataIndex: 'jshj',
       key:'jshj',
       sorter: true,
       sortOrder: sortedInfo.columnKey === 'jshj' && sortedInfo.order,
-      render:text=><span>{text?text:'--'}</span>
+      render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
     },{
       title: '作废标识',
       dataIndex: 'zfbz',

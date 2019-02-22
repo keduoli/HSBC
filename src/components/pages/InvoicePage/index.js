@@ -104,6 +104,7 @@ class InvoicePage extends React.Component{
       gfmc:'',
       con_id:'',
       dd_id:'',
+      export:'0',
     };
     this.department_ids = '';
   }
@@ -154,14 +155,44 @@ class InvoicePage extends React.Component{
     return(
         <RefreshBtn>
           <RefreshIcon type="sync" onClick={()=>{
-            this.clearAllFnc()
-            this.getInvoiceData()
-            this.filter.resetFields();
+            this.getInvoiceData();
             this.invoiceTable.clearSorter();
           }}/>
         </RefreshBtn>
       )
   };
+  getInvoiceData = () => {
+    const param = {
+      size:10,
+      page:this.state.page,
+      state:this.state.state,
+      time_area:this.state.time_area,
+      keyword:this.state.keyword,
+      fpzl:this.state.fpzl,
+      is_success:this.state.is_success,
+      entry_id:this.state.entry_id,
+      sub_time:this.state.sub_time,
+      fplc:this.state.fplc,
+      xfmc:this.state.xfmc,
+      zfbz:this.state.zfbz,
+      create_time:this.state.create_time,
+      order:JSON.stringify({'order_name':this.state.order_name,'order_value':this.state.order_value}),
+      select_all:1,
+      jshj_min:this.state.jshj_min,
+      jshj_max:this.state.jshj_max,
+      department_ids:this.state.department_ids,
+      es_search:this.state.es_search,
+      cus_num:this.state.cus_num,
+      fpdm:this.state.fpdm,
+      fphm:this.state.fphm,
+      fkzt:this.state.fkzt,
+      gfmc:this.state.gfmc,
+      con_id:this.state.con_id,
+      dd_id:this.state.dd_id,
+      export:'0',
+    }
+    this.props.getData(param)
+  }
   clearAllFnc = () => {
     this.setState({
       showInfo:false,
@@ -194,6 +225,7 @@ class InvoicePage extends React.Component{
       gfmc:'',
       con_id:'',
       dd_id:'',
+      export:'0',
     })
     this.filter.resetFields();
     this.props.setInvId(false)
@@ -253,10 +285,6 @@ class InvoicePage extends React.Component{
   }
   checkChange = () => {
     this.setState({department_ids:this.department_ids})
-    const param = {
-      department_id:this.department_ids,
-      is_link:1,
-    }
     this.props.getUserList()
     this.props.getXfmcList({department_ids:this.department_ids})
   }
@@ -314,6 +342,7 @@ class InvoicePage extends React.Component{
       gfmc:this.state.gfmc,
       con_id:this.state.con_id,
       dd_id:this.state.dd_id,
+      export:'0',
     }
     if(this.state.showCheck === true){
       this.props.getData(param,(res)=>{
@@ -351,41 +380,15 @@ class InvoicePage extends React.Component{
         jshj_max:'',
         es_search:this.state.checked === true ? 1 : 0,
         key:'7',
-        dd_id:arr[0]!=null?arr[0]:'',
-        con_id:arr.length>1?(arr[1]?arr[1]:''):'',
+        dd_id:arr[0]!='null'?arr[0]:'',
+        con_id:arr.length>1?(arr[1]!='null'?arr[1]:''):'',
         date:'',
         cus_num:'',
         fpdm:'',
         fphm:'',
         fkzt:'',
         gfmc:'',
-      })
-      const param = {
-        page:1,
-        state:'2,5,6',
-        time_area:'',
-        fpzl:'',
-        is_success:'',
-        entry_id:'',
-        sub_time:'',
-        create_time:'',
-        fplc:'',
-        xfmc:'',
-        zfbz:'',
-        jshj_min:'',
-        jshj_max:'',
-        key:'7',
-        dd_id:arr[0]!=null?arr[0]:'',
-        con_id:arr.length>1?(arr[1]?arr[1]:''):'',
-        date:'',
-        cus_num:'',
-        fpdm:'',
-        fphm:'',
-        fkzt:'',
-        gfmc:'',
-      }
-      this.props.getData(param,()=>{
-        this.props.setInvId(false)
+        export:'0',
       })
     }
   }
@@ -402,8 +405,8 @@ class InvoicePage extends React.Component{
     this.props.changeRoute(true);
   }
   render(){
-    const { entryUserList,changeRoute,tabChange,tabData,exportPdfFnc,invDeleteFnc,invMemoFnc,customerList,pollingFnc,navList,unLinkContract,unLinkDrawdown,linkCustomer,getDrawdownList,getCustomerList,linkDrawdown,getContractList,linkContract,invoiceAction,invoiceList,exportAction,getInvoiceList } = this.props;
-    const { res,companyList } = this.state;
+    const { entryUserList,exportAllFnc,changeRoute,tabChange,tabData,exportPdfFnc,invDeleteFnc,invMemoFnc,customerList,pollingFnc,navList,unLinkContract,unLinkDrawdown,linkCustomer,getDrawdownList,getCustomerList,linkDrawdown,getContractList,linkContract,invoiceAction,invoiceList,exportAction,getInvoiceList } = this.props;
+    const { res } = this.state;
     return(
       <div>
         <NavTitle
@@ -428,6 +431,7 @@ class InvoicePage extends React.Component{
                        getExportUrl={this.props.getExportUrl}
                        state={this.state}
                        {...this.props}
+                       exportAllFnc={exportAllFnc}
                        showCheck={this.state.showCheck}
                        checkInvoice={this.checkInvoice}
                        searchFnc={this.searchAllFnc}

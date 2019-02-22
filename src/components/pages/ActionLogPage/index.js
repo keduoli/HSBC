@@ -9,12 +9,18 @@ const LogContent = styled.div`
   padding:15px;
   min-height:70vh;
 `;
-const SwitchLog = styled.div`
-  background:#fff;
-  padding:20px 0 0 10px;
-  overflow:hidden;
-  width: 100%;
-  margin-bottom:15px;
+const RefreshBtn = styled.div`
+  display:inline-block;
+  margin-left:20px;
+`;
+const RefreshIcon = styled(Icon)`
+  cursor:pointer;
+  &:hover{
+    color:#2476f8;
+  }
+  &:active{
+    color:rgb(211,211,211);
+  }
 `;
 class ActionLogPage extends React.Component{
   constructor(props) {
@@ -63,10 +69,27 @@ class ActionLogPage extends React.Component{
       showInfo:false,
     });
   }
+  showRefreshBtn = () => {
+    return(
+        <RefreshBtn>
+          <RefreshIcon type="sync" onClick={()=>{
+            const param = {
+              page:this.state.page,
+              size:10,
+              time_area:this.state.time_area,
+              keyword:this.state.keyword,
+              action_user:this.state.action_user,
+            };
+            this.props.getLogList(param);
+          }}/>
+        </RefreshBtn>
+      )
+  };
   render(){
     return(
       <div>
         <NavTitle title="企业设置"
+                  refreshBtn={this.showRefreshBtn}
                   submeun='操作日志'/>
         <ActionLogFilter
           {...this.props}

@@ -452,7 +452,7 @@ class OcrPage extends React.Component{
             this.webSocketFnc();
           }
           const t = file.type;
-          if(t === "image/jpeg" || t === "image/png" || t === "image/gif" || t === "image/jpg" || t === "image/bmp" || t === "image/webp" || t === "application/pdf"){
+          if(t === "image/jpeg" || (file.name+'').split('.')[1] == 'xps' || t === "image/png" || t === 'application/vnd.ms-xpsdocument' || t === "image/gif" || t === "image/jpg" || t === "image/bmp" || t === "image/webp" || t === "application/pdf"){
             if(this.canWs){
               this.canWs=false;
               this.goAgain = false;
@@ -468,7 +468,7 @@ class OcrPage extends React.Component{
             }));
               const func = () => {
                 let obj; 
-                if(file.size>=113145728){
+                if(file.size>=314572800){
                   obj = {
                     pic_id:file.uid,
                     state:11,
@@ -555,6 +555,8 @@ class OcrPage extends React.Component{
                           }
                         }
                       }
+                  }).catch((e)=>{
+                    console.log(e)
                   })
                 }
               }
@@ -566,7 +568,7 @@ class OcrPage extends React.Component{
               }
             return false;
           }else{
-            message.warning('只能上传图片或PDF');
+            message.warning('上传的文件格式不支持');
             return false;
           }
         }
@@ -991,26 +993,9 @@ class OcrPage extends React.Component{
   };
   goToWait = () => {
     const {waitList} = this.props;
-    if(waitList && waitList.total > 0){
-      this.setState({showWaitList:true,changeClassName:true,pageNum:1},()=>{
-        this.getWaitListFnc();
-      });
-    }else{
-      this.setState({noWaitData:<Modal style = {{textAlign:'center',top:150}}
-                                       closable={false}
-                                       visible
-                                       width={400}
-                                       maskClosable={false}
-                                       footer={null}
-                                >
-                                  <p style={{fontSize:14,padding:'20px 0'}}>暂无待确认发票</p>
-                                  <Button type="primary"
-                                          onClick={()=>{
-                                            this.setState({noWaitData:''});
-                                          }}
-                                  >确定</Button>
-                                </Modal>})
-    }
+    this.setState({showWaitList:true,changeClassName:true,pageNum:1},()=>{
+      this.getWaitListFnc();
+    });
   };
   getWaitListFnc = () => {
     const param = {
@@ -1147,9 +1132,9 @@ class OcrPage extends React.Component{
           newFileList.push(fileList[i]);
         }else if(uploadState.find((el)=>el.pic_id === fileList[i].uid && el.state == 0) && state[j] == '3'){
           newFileList.push(fileList[i]);
-        }else if(uploadState.find((el)=>el.pic_id === fileList[i].uid && (el.state == 1 || el.state == 2 || el.state==3)) && state[j] == '5'){
+        }else if(uploadState.find((el)=>el.pic_id === fileList[i].uid && (el.state == 2 || el.state==3)) && state[j] == '5'){
           newFileList.push(fileList[i]);
-        }else if(( uploadState.find((el)=>el.pic_id === fileList[i].uid && el.state === 4) )&& state[j] == '6'){
+        }else if(( uploadState.find((el)=>el.pic_id === fileList[i].uid && el.state === 1) )&& state[j] == '6'){
           newFileList.push(fileList[i]);
         }
         this.setState({newFileList:newFileList})
@@ -1191,7 +1176,7 @@ class OcrPage extends React.Component{
                           }
                           {
                             this.state.uploadState.find((el)=>el.pic_id === record.uid && el.state == 11) &&
-                            <span>上传失败（文件大小超过3M）</span>
+                            <span>上传失败（文件大小超过300M）</span>
                           }
                           {
                             this.state.uploadState.find((el)=>el.pic_id === record.uid && el.state == 5) &&
@@ -1202,11 +1187,11 @@ class OcrPage extends React.Component{
                             <span>上传成功</span>
                           }
                           {
-                            this.state.uploadState.find((el)=>el.pic_id === record.uid && el.state == 4) &&
+                            this.state.uploadState.find((el)=>el.pic_id === record.uid && el.state == 1) &&
                             <span style={{marginRight:'25%'}}>无法识别</span>
                           }
                           {
-                            this.state.uploadState.find((el)=>el.pic_id === record.uid && (el.state == 1 || el.state == 2 || el.state == 3)) &&
+                            this.state.uploadState.find((el)=>el.pic_id === record.uid && (el.state == 2 || el.state == 3)) &&
                             <span>查验失败</span>
                           }
                           {
@@ -1266,8 +1251,12 @@ class OcrPage extends React.Component{
                         <div><Icon type="sync" spin /> &nbsp;&nbsp;查验中</div>
                       }
                       {
-                        this.state.uploadState.find((el)=>el.pic_id === record.uid && (el.state == 1 || el.state == 2)) &&
+                        this.state.uploadState.find((el)=>el.pic_id === record.uid &&  el.state == 2) &&
                           <ItemSpan style={{float:'left'}}><ItemErrSpan/>查验失败</ItemSpan>
+                      }
+                      {
+                        this.state.uploadState.find((el)=>el.pic_id === record.uid &&  el.state == 1) &&
+                          <ItemSpan style={{float:'left'}}><ItemErrSpan/>未识别到发票</ItemSpan>
                       }
                       {
                         this.state.uploadState.find((el)=>el.pic_id === record.uid && el.state == 0) &&
@@ -1386,7 +1375,7 @@ class OcrPage extends React.Component{
             search={this.showWait}
             refreshBtn={this.showRefreshBtn}
           />
-          <div style={{color:"#FF7E7E",fontSize:12}}>注：为保证图像识别质量，请保证图片拍摄或扫描清晰无遮挡，建议图像分辨率300dpi，图像大小不超过2M。</div>
+          <div style={{color:"#FF7E7E",fontSize:12}}>注：为保证图像识别质量，请保证图片拍摄或扫描清晰无遮挡，建议图像分辨率300dpi，图像大小不超过100M。</div>
           <ScanContent>
             <div style={{height:200,marginTop:15}}>
               <div style={{background:"#fff",overflow:"hidden",width:"50%",float:'left',height:'100%'}}>
@@ -1519,6 +1508,11 @@ class OcrPage extends React.Component{
                 setPage={this.setPageFnc}
                 state={this.state}
                 ocrCheckFnc={this.props.ocrCheckFnc}
+                getDrawdownList={this.props.getDrawdownList}
+                getContractList={this.props.getContractList}
+                customerList={this.props.customerList}
+                drawdownList={this.props.drawdownList}
+                contractList={this.props.ontractList}
                 clearWaitFnc={this.clearWaitFnc}
                 clearCheck={()=>{
                   this.setState({showCheck:true})

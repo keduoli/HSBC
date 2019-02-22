@@ -91,7 +91,7 @@ const mapDispatchToProps = dispatch => ({
       callBack?callBack(res):'';
     },
   })),
-  pollingDetailFnc:(param,callBack) => dispatch(actions.request(actions.RQ.POLAGIAN_POLLING,"/ajax/polling/polagian",{
+  pollingDetailFnc:(param,callBack) => dispatch(actions.request(actions.RQ.POLAGIAN_POLLING,"/ajax/polling/ploByIds",{
     params:param,
     method:'post',
     success:(res)=>{
@@ -131,12 +131,9 @@ const mapDispatchToProps = dispatch => ({
     params:param,
     method:'post',
     success:(res)=>{
-      // message.success(res.msg);
       callBack?callBack():'';
       if(res.data){
-        if(res.data.path){
-          window.location.href=res.data.path;
-        }
+        window.location.href='/attachment/download/'+res.data;
       }
     }
   })),

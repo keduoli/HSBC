@@ -79,28 +79,32 @@ class App extends React.Component{
     this.ws = ''
   }
   componentWillMount(){
-    if(window.location.href.split("://")[1].split('/').length==1){
+    if(window.location.href.split("://")[1].split('/')[1]==""){
       this.props.router.push('home')
     }
-    this.props.getNavList((res)=>{
-      this.setState({navList:res})
-    });
-    this.props.getRemind((res)=>{
-      if(res>0){
-        this.setState({pollingWaring:<Modal title={<TitleSpan>查验提示</TitleSpan>}
-                                            visible
-                                            footer={null}
-                                            style={{textAlign:'center'}}
-                                            onCancel={()=>this.setState({pollingWaring:''})}
-                                          >
-                                          <div style={{lineHeight:2}}>今日发票轮询已完成，点击<span style={{color:'#108ee9',cursor:'pointer'}} onClick={()=>this.gotopolling()}>查看详情</span>，查看轮询结果</div>
-                                          <div style={{display:'flex',justifyContent:'space-around',marginTop:20,width:'60%',marginLeft:'20%'}}>
-                                            <Button onClick={()=>this.setState({pollingWaring:''})}>返回</Button>
-                                            <Button type='primary' onClick={()=>this.gotopolling()}>查看详情</Button>
-                                          </div>
-                                      </Modal>})
-      }
-    })
+    if(this.props.location.pathname === 'login'){
+      this.setState({showBar:false})
+    }else{
+      this.props.getNavList((res)=>{
+        this.setState({navList:res})
+      });
+      this.props.getRemind((res)=>{
+        if(res>0){
+          this.setState({pollingWaring:<Modal title={<TitleSpan>查验提示</TitleSpan>}
+                                              visible
+                                              footer={null}
+                                              style={{textAlign:'center'}}
+                                              onCancel={()=>this.setState({pollingWaring:''})}
+                                            >
+                                            <div style={{lineHeight:2}}>今日发票轮询已完成，点击<span style={{color:'#108ee9',cursor:'pointer'}} onClick={()=>this.gotopolling()}>查看详情</span>，查看轮询结果</div>
+                                            <div style={{display:'flex',justifyContent:'space-around',marginTop:20,width:'60%',marginLeft:'20%'}}>
+                                              <Button onClick={()=>this.setState({pollingWaring:''})}>返回</Button>
+                                              <Button type='primary' onClick={()=>this.gotopolling()}>查看详情</Button>
+                                            </div>
+                                        </Modal>})
+        }
+      }) 
+    }
   };
   gotopolling = () => {
     const list = this.props.tabData.list;
@@ -146,39 +150,49 @@ class App extends React.Component{
     }
     return(
       <div>
-        {
-          this.state.showMask === true && 
-          <ChangeMask>
-            <MaskSpin style={{opacity:1}} size="large"/>
-          </ChangeMask>
-        }
-        {this.state.showBar && <Menu ref={(ref)=>this.menu = ref} {...this.props} navList={this.state.navList}/>}
-        <NavBar showMessage={this.state.showMessage} 
-                showBar={this.state.showBar} 
-                {...this.props} 
-                changeMask={()=>this.setState({showMask:true})}/> 
-        {
-          this.props.tabData.list.length!==0&&<Tab removeRoute={this.removeRoute} {...this.props}/>
-        }
-        <PageCon style={{paddingTop:this.props.tabData.list.length>0?90:50}}>
-        {
-            this.state.pages.map((page)=>{
-              return(
-                <div key={page.props.location.pathname}
-                    style={{display:page.props.location.pathname===pathname?"block":"none"}}
-                >
-                    <PageTemplate className='react-dom' 
-                                  {...this.props}
-                                  navList={this.state.navList}
-                                  showBar={this.state.showBar}>
-                        {page}
-                    </PageTemplate>
-                </div>
-                )
-            })
-          }
-          {this.state.pollingWaring}
-        </PageCon>
+            {
+              this.state.showMask === true && 
+              <ChangeMask>
+                <MaskSpin style={{opacity:1}} size="large"/>
+              </ChangeMask>
+            }
+            {this.state.showBar && <Menu ref={(ref)=>this.menu = ref} {...this.props} navList={this.state.navList}/>}
+            {
+              this.state.showBar&&
+              <NavBar showMessage={this.state.showMessage} 
+                      showBar={this.state.showBar} 
+                      {...this.props} 
+                      changeMask={()=>this.setState({showMask:true})}/> 
+            }
+            {
+              this.props.tabData.list.length!==0&&this.state.showBar&&<Tab removeRoute={this.removeRoute} {...this.props}/>
+            }
+            {
+              this.state.showBar ?
+              <PageCon style={{paddingTop:this.props.tabData.list.length>0?90:50}}>
+              {
+                  this.state.pages.map((page)=>{
+                    return(
+                      <div key={page.props.location.pathname}
+                          style={{display:page.props.location.pathname===pathname?"block":"none"}}
+                      >
+                          <PageTemplate className='react-dom' 
+                                        {...this.props}
+                                        navList={this.state.navList}
+                                        showBar={this.state.showBar}>
+                              {page}
+                          </PageTemplate>
+                      </div>
+                      )
+                  })
+                }
+                {this.state.pollingWaring}
+              </PageCon>
+              :
+              <div>
+                {this.props.children}
+              </div>
+            }
       </div>
     )
   }

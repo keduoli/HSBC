@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './components/App'
-import {HomePage,UserManagePage,SpecialCheckPage,LoanManagePage,ContractManagePage,WaitOpenPage,ApplyOpenPage,ApplyRecordPage,CollectionPage,HeadOpeningPage,CodeOpeningPage,MessagePage,TurnOutTaxPage,PrintPage,SaleSettingPage,InvoiceStockPage,GoodsManagePage,InvoicesQueryPage,EleOpeningPage,PapOpeningPage,ImportCheckPage,WhiteListPage,ExportSettingPage,ManagerPage,FrameworkPage,PollingPage,APISettingPage,ExpenseSettingsPage,TaxformPage,ResultPage,DeductionPage,InvoicePage,ChangePasswordPage,RecordPage,OcrPage,ActionLogPage,ScanPage,SuccessivePage,UploadPage,BlackListPage, GroupModelPage} from 'containers'
+import {HomePage,BillPage,LoginPage,UserManagePage,SpecialCheckPage,LoanManagePage,ContractManagePage,WaitOpenPage,ApplyOpenPage,ApplyRecordPage,CollectionPage,HeadOpeningPage,CodeOpeningPage,MessagePage,TurnOutTaxPage,PrintPage,SaleSettingPage,InvoiceStockPage,GoodsManagePage,InvoicesQueryPage,EleOpeningPage,PapOpeningPage,ImportCheckPage,WhiteListPage,ExportSettingPage,ManagerPage,FrameworkPage,PollingPage,APISettingPage,ExpenseSettingsPage,TaxformPage,ResultPage,DeductionPage,InvoicePage,ChangePasswordPage,RecordPage,OcrPage,ActionLogPage,ScanPage,SuccessivePage,UploadPage,BlackListPage, GroupModelPage} from 'containers'
 import { CompanyPage,DepartmentPage } from 'components'
 
 
@@ -40,6 +40,8 @@ const routes = (
     <Route path="/drawdown" component={LoanManagePage} />
     <Route path="/contract" component={ContractManagePage} />
     <Route path="/recordonly" component={SpecialCheckPage} />
+    <Route path="/bill" component={BillPage} />
+    <Route path="/login" component={LoginPage} />
 
   </Route>
 );

@@ -307,7 +307,7 @@ class InvoiceLinkTable extends React.Component{
 			render:(text)=><div>{text?text:'---'}</div>,
 			width:'24%'
     },{
-      title: '发票日期',
+      title: '开票日期',
       key:'kprq',
       dataIndex: 'kprq',
       render:(text)=><div>{text?text:'---'}</div>,
@@ -483,7 +483,7 @@ class InvoiceLinkTable extends React.Component{
 					{
 						selectedRowKeys.length>0 &&
 						<div style={{float:'left',fontSize:12,marginTop:5}}>
-							已勾选发票{selectedRowKeys.length}张，关联金额共计{this.state.total_je}元
+							已勾选发票{selectedRowKeys.length}张，关联金额共计{Number(this.state.total_je).toFixed(2)}元
 						</div>
 					}
 					<Pagination total={invoiceList.count}

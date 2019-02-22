@@ -56,6 +56,15 @@ const mapDispatchToProps = dispatch => ({
       callback?callback(res.data):""
     }
   })),
+  exportAllFnc: (param,callback) => dispatch(actions.request(actions.RQ.INVOICE_EXPORT_ALL,"/ajax/invoice/list",{
+    params:param,
+    success:(res)=>{
+      callback?callback(res.data):""
+      if(res.data){
+        window.location.href='/attachment/download/'+res.data;
+      }
+    }
+  })),
   getContractList: (param,callback) => dispatch(actions.request(actions.RQ.CONTRACT_LIST,"/ajax/contract/list",{
     params:param,
     success:(res)=>{

@@ -87,6 +87,49 @@ class DrawdownCon extends React.Component{
     check_results:null,
   }
   drawdownActionFnc = (action) => {
+    if(action == 1 || action == 2){
+      this.props.drawdownCheck(this.props.drawdownDetail.id,()=>{
+        this.props.getDrawdownDetail(this.props.drawdownDetail.id,(res)=>{
+          this.props.showDetail(res)
+          this.setResults()
+          if(res.check_results[0].type == 0){
+            this.setState({drawdownActionModal:<Modal   title={<TitleSpan>操作提示</TitleSpan>}
+                                                        style = {{textAlign:'center',top:200}}
+                                                        onCancel={()=>this.setState({drawdownActionModal:''})}
+                                                        visible
+                                                        width={400}
+                                                        maskClosable={false}
+                                                        footer={null}
+                                                  >
+                                                  <div style={{margin:'10px 0 40px'}}>
+                                                    校验不通过，是否继续操作？
+                                                  </div>
+                                                  <div>
+                                                    <Button onClick={()=>{this.setState({drawdownActionModal:''})}} style={{marginRight:20}}>取消</Button>
+                                                    <Button type="primary" onClick={()=>{
+                                                      const param = {
+                                                        action_id:action,
+                                                        id:this.props.drawdownDetail.id,
+                                                      };
+                                                      this.props.drawdownAction(param,()=>{
+                                                        this.props.getDrawdownDetail(this.props.drawdownDetail.id,(res)=>{
+                                                          this.props.showDetail(res)
+                                                          this.setState({drawdownActionModal:''})
+                                                        })
+                                                      });
+                                                    }}>确定</Button>
+                                                  </div>
+                                                  </Modal>})
+          }else{
+            this.showResultModal(action)
+          }
+        })
+      })
+    }else{
+      this.showResultModal(action)
+    }
+  }
+  showResultModal = (action) => {
     this.setState({drawdownActionModal:<Modal   title={<TitleSpan>操作提示</TitleSpan>}
                                                 style = {{textAlign:'center',top:200}}
                                                 onCancel={()=>this.setState({drawdownActionModal:''})}
@@ -114,7 +157,7 @@ class DrawdownCon extends React.Component{
                                             }}>确定</Button>
                                           </div>
                                           </Modal>})
-	}
+  }
 	setResults = () => {
     const check_results = JSON.parse(JSON.stringify(this.props.drawdownDetail.check_results));
     for(let i in check_results){

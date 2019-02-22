@@ -114,7 +114,7 @@ class InvoiceExportModal extends React.Component{
                   <TextConDec>如未下载可点击下载文件进行下载</TextConDec>
                   <Button style={{marginTop:'10px'}}
                           type="primary"
-                          onClick={()=>{window.location.href=exportUrl.path}}
+                          onClick={()=>{window.location.href='/attachment/download/'+exportUrl}}
                           >下载文件</Button>
               </SuccessDiv>
           }

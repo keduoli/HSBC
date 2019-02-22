@@ -307,19 +307,19 @@ class PollingTable extends React.Component{
         title: '税额',
         key:'se',
 				dataIndex: 'se',
-				render:text=><span>{text?text:'--'}</span>
+				render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
       },{
         title: '金额',
         dataIndex:'je',
 				key:'je',
-        render:text=><span>{text?text:'--'}</span>
+        render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
       },{
         title: '价税合计',
         dataIndex: 'jshj',
         key:'jshj',
         sorter: true,
         sortOrder: sortedInfo.columnKey === 'jshj' && sortedInfo.order,
-        render:text=><span>{text?text:'--'}</span>
+        render:text=><span>{text?Number(text).toFixed(2):'--'}</span>
       },{
         title: '作废标识',
         dataIndex: 'zfbz',

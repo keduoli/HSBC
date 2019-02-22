@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon,Checkbox,Input,Select } from 'antd'
+import { Icon,Input,Select } from 'antd'
 const { Option } = Select;
 const WarningBoss = styled.div`
 	background:#fff;
@@ -50,9 +50,9 @@ const AttachCell = styled.div`
 `;
 class WarningRight extends React.Component {
 	state ={
-    cusId:undefined,
-    conId:undefined,
-    ddId:undefined,
+    cusId:this.props.cusId,
+    conId:this.props.conId,
+    ddId:this.props.ddId,
 	}
 	render(){
 		const {getDrawdownList,getContractList,customerList,drawdownList,contractList,navList} = this.props;
@@ -80,6 +80,7 @@ class WarningRight extends React.Component {
 											allowClear
 											showSearch
 											optionFilterProp="children"
+											value={this.state.cusId}
 											placeholder='请选择关联客户'
 											onChange={(e)=>{
 												if(!!e){

@@ -47,7 +47,7 @@ const BottomPage = styled.div`
   bottom:0px;
   right:0px;
   z-index:100;
-  padding:10px 20px 0 20px;
+  padding:10px 10px 0 10px;
   box-sizing:border-box;
 	overflow:hidden;
   -webkit-transition: all .2 ease;
@@ -77,7 +77,7 @@ class InvoiceTable extends React.Component{
       deteleModal:'',
       showAll:false,
       selectAll:[],
-      sortedInfo: {columnKey: "number", field: "number", order: "descend"},
+      sortedInfo: {columnKey: "sub_time", field: "sub_time", order: "descend"},
       commls: [],
       exportLoading:false,
       exportImagesLoading:false,
@@ -260,8 +260,8 @@ class InvoiceTable extends React.Component{
       render:(text)=>{
         return  (
           <div style={{overflow:'hidden',width:50}}>
-            {(text === '04' || text === '11') && <TypeSpan style={{background:"#90ed7d"}}>普票</TypeSpan>}
-            {(text === '01' || text === '02') && <TypeSpan style={{background:"#f7a35c"}}>专票</TypeSpan>}
+            {(text === '04' || text === '11' || text === '98') && <TypeSpan style={{background:"#90ed7d"}}>普票</TypeSpan>}
+            {(text === '01' || text === '02' || text === '99') && <TypeSpan style={{background:"#f7a35c"}}>专票</TypeSpan>}
             {text === '10' && <TypeSpan style={{background:"#7cb5ec"}}>电票</TypeSpan>}
             {text === '14' && <TypeSpan style={{background:"rgb(128, 133, 233)"}}>通行费</TypeSpan>}
             {text === '03' && <TypeSpan style={{background:"rgb(241, 92, 128)"}}>机动车</TypeSpan>}
@@ -380,12 +380,12 @@ class InvoiceTable extends React.Component{
         return (
           <div>
             {
-              record.dep_name ?
+              (!record.dep_name && !record.realname) ?
+                <span>--</span>:
                 <div>
                   <p>{record.realname}{record.is_dismiss=='1'&&'(已离职)'}</p>
                   <p>{record.dep_name}</p>
-                </div>:
-                <span>--</span>
+                </div>
             }
           </div>
         )
@@ -460,7 +460,10 @@ class InvoiceTable extends React.Component{
                 <div style={{margin:'10px 0 40px'}}>
                   <div style={{overflow:'hidden',marginBottom:20}}>
                     <div style={{float:'left',width:'33%',textAlign:'right',marginRight:10,lineHeight:'25px',fontSize:12}}>客户编号：</div>
-                    <Select style={{float:'left',width:'200px',textAlign:'left'}} 
+                    <Select style={{float:'left',width:'200px',textAlign:'left'}}
+                            allowClear
+                            showSearch
+                            optionFilterProp="children"
                             onChange={(val)=>{
                               let cus_id = val;
                               let cus_name = res.list.filter((el)=>el.id == val)[0].cus_name;
@@ -510,7 +513,7 @@ class InvoiceTable extends React.Component{
                   footer={null}
               >
               <div style={{margin:'10px 0 40px'}}>
-                确定要将选中的发票取消关联合同么？
+                点击确认，将取消关联未放款或已放款待补交状态的所有合同，是否确认？
               </div>
               <div>
               <Button onClick={()=>{this.setState({unLinkModal:''})}} style={{marginRight:20}}>取消</Button>
@@ -533,7 +536,7 @@ class InvoiceTable extends React.Component{
                   footer={null}
               >
               <div style={{margin:'10px 0 40px'}}>
-                确定要将选中的发票取消关联放款么？
+              点击确认，将取消关联未放款和已放款待补交状态的所有放款，是否确认？
               </div>
               <div>
               <Button onClick={()=>{this.setState({unLinkModal:''})}} style={{marginRight:20}}>取消</Button>
@@ -617,6 +620,7 @@ class InvoiceTable extends React.Component{
         fkzt:next.fkzt,
         gfmc:next.gfmc,
         con_id:next.con_id,
+        export:'0',
       };
       this.props.getData(param);
       if(next.goRefresh === true){
@@ -659,6 +663,7 @@ class InvoiceTable extends React.Component{
       fkzt:state.fkzt,
       gfmc:state.gfmc,
       con_id:state.con_id,
+      export:'0',
     };
     this.selectAmountArr = [];
     this.clearSorter();
@@ -803,7 +808,7 @@ class InvoiceTable extends React.Component{
 	}
   clearSorter = () => {
     this.selectAmountArr = [];
-    this.setState({showAll:false,selectedRowKeys:[],selectAll:[],length:0,showAll:false,selectArr:[],selectAmount:'',selectJshj:0,selectJeTotal:'',selectSeTotal:'',showJeCount:0,showSeCount:0,sortedInfo:{columnKey: "number", field: "number", order: "descend"}},()=>{
+    this.setState({showAll:false,selectedRowKeys:[],selectAll:[],length:0,showAll:false,selectArr:[],selectAmount:'',selectJshj:0,selectJeTotal:'',selectSeTotal:'',showJeCount:0,showSeCount:0,sortedInfo:{columnKey: "sub_time", field: "sub_time", order: "descend"}},()=>{
       let arr;
       if(this.props.navList.role===1){
         arr = CookieJs.getCookie("show2");
@@ -815,7 +820,7 @@ class InvoiceTable extends React.Component{
   };
   clearRadiuo = () => {
     this.selectAmountArr = [];
-    this.setState({showAll:false,selectedRowKeys:[],selectAll:[],selectJshj:0,length:0,showJeCount:0,showSeCount:0,sortedInfo:{columnKey: "number", field: "number", order: "descend"}})
+    this.setState({showAll:false,selectedRowKeys:[],selectAll:[],selectJshj:0,length:0,showJeCount:0,showSeCount:0,sortedInfo:{columnKey: "sub_time", field: "sub_time", order: "descend"}})
   }
   componentWillMount(){
     let coms = [];
@@ -1073,6 +1078,7 @@ class InvoiceTable extends React.Component{
                       }
                       const param={
                         invoice_ids:selectedRowKeys.join(","),
+                        order:JSON.stringify({'order_name':this.props.state.order_name,'order_value':this.props.state.order_value}),
                       };
                       this.setState({exportImagesLoading:true})
                       this.props.exportPdfFnc(param,(res)=>{

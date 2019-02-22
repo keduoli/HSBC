@@ -218,8 +218,7 @@ class PollingFilterMake extends React.Component{
                         size = 'large'
                       >
                         <Option key='2'>已提交</Option>
-                        <Option key='3'>已导出</Option>
-                        <Option key='4'>已删除</Option>
+                        <Option key='5'>已删除</Option>
                         <Option key='6'>已归档</Option>
                       </Select>
                     )}
@@ -279,19 +278,7 @@ class PollingFilterMake extends React.Component{
                 <Col span={7} key={3}>
                   <FormItem {...formItemLayout} label='销方名称'>
                     {getFieldDecorator(`xfmc`)(
-                      <Select
-                        showSearch
-                        placeholder="请选择"
-                        allowClear = {true}
-                        size='large'
-                        optionFilterProp="children"
-                      >
-                        {
-                          this.props.xfmcList.length>0 && this.props.xfmcList.map((value,index) => {
-                            return <Option key={index} value={value}>{value==='None'?"空":value}</Option>
-                          })
-                        }
-                      </Select>
+                      <Input/>
                     )}
                   </FormItem>
                 </Col>
@@ -301,7 +288,6 @@ class PollingFilterMake extends React.Component{
                       <RangePicker
                         style={{width:'100%'}}
                         size='large'
-                        disabledDate={this.disabledDate}
                       />
                     )}
                   </FormItem>

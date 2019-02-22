@@ -38,7 +38,7 @@ class TaxformPage extends React.Component{
       let days = new Date(year, month, 0);
       days = days.getDate(); 
       let year2 = year;
-      let month2 = parseInt(month) - 1;
+      let month2 = parseInt(month);
       if (month2 == 0) {
           year2 = parseInt(year2) - 1;                          //获取当前时间的上一个月
           month2 = 12;

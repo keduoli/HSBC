@@ -180,7 +180,7 @@ class WaitConfirmTable extends React.Component{
     })
   };
   showInvoiceHandle = (res,type) => {
-    const {navList,linkUserList,formSaveScan,saveScan,goCheck,waitParam} = this.props;
+    const {navList,linkUserList,formSaveScan,saveScan,goCheck,waitParam,customerList,drawdownList,contractList,getDrawdownList,getContractList} = this.props;
     this.setState({
       showDetailModal:null,
       showInvoiceModal:<WaitInvoiceHandle
@@ -193,7 +193,14 @@ class WaitConfirmTable extends React.Component{
         msg={res.msg}
         navList={navList}
         scanAgain={!!type}
+        showInvoiceHandle={()=>this.showInvoiceHandle(res,type)}
         memo={this.state.record.memo}
+        state={this.state.record}
+        getDrawdownList={getDrawdownList}
+        getContractList={getContractList}
+        customerList={customerList}
+        drawdownList={drawdownList}
+        contractList={contractList}
         tag_ids={this.state.record.tag_ids}
         departUserList={linkUserList}
         formSaveScan={formSaveScan}

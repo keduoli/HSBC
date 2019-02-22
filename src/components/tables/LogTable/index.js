@@ -44,8 +44,8 @@ class LogTable extends React.Component{
       }
     },{
       title: '操作人',
-      dataIndex: 'realname',
-      key:'realname',
+      dataIndex: 'realName',
+      key:'realName',
     },{
       title: '操作ip',
       dataIndex: 'ip',

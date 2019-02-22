@@ -234,7 +234,7 @@ class DrawInvoiceLinkTable extends React.Component{
 			render:(text)=><div>{text?text:'---'}</div>,
 			width:'24%'
     },{
-      title: '发票日期',
+      title: '开票日期',
       key:'kprq',
       dataIndex: 'kprq',
       render:(text)=><div>{text?text:'---'}</div>,

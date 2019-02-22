@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button,Tooltip } from 'antd';
 import { InvoiceLinkModal } from 'components';
 import { withRouter } from 'react-router';
 import { zhMoney } from './../../util';
@@ -82,6 +82,11 @@ const TableFont=styled.div`
 	height:100%;
 	overflow:hidden;
 `;
+const TableTooltip = styled(Tooltip)`
+	width:33%;
+	text-align:center;
+	float:left;
+`;
 const TableBody = styled.div`
 	font-size:12px;
 	line-height:20px;
@@ -154,8 +159,8 @@ class ContractCon extends React.Component{
 							{
 								contractDetail.drawdowns.map((item,index)=>{
 									return <TableBody key={index}>
-													<TableFont title={item.debt_num}>{item.debt_num?item.debt_num:'---'}</TableFont>
-													<TableFont title={item.num}>{item.num?item.num:'---'}</TableFont>
+													<TableTooltip title={item.debt_num?item.debt_num:'---'} placement="topLeft"><TableFont>{item.debt_num?item.debt_num:'---'}</TableFont></TableTooltip>
+													<TableTooltip title={item.num?item.num:'---'} placement="topLeft"><TableFont>{item.num?item.num:'---'}</TableFont></TableTooltip>
 													<TableFont>
 														{item.state=='0' && '未放款'}
 														{item.state=='1' && '已放款待补交'}
@@ -205,8 +210,8 @@ class ContractCon extends React.Component{
 														<LableRightSpan>关联发票数</LableRightSpan>
 														<ItemRightCon>
 															{item.inv_count?item.inv_count:'---'}
-															{item.state != '2' && <Button type='primary' onClick={()=>this.showModal(item.dd_id,'删减关联发票')} style={{marginRight:120,float:'right'}}>删减</Button>}
-															{item.state != '2' && <Button type='primary' onClick={()=>this.showModal(item.dd_id,'添加关联发票')} style={{marginRight:30,float:'right'}}>添加</Button>}
+															{item.state != '2' && item.state != '3' && <Button type='primary' onClick={()=>this.showModal(item.dd_id,'删减关联发票')} style={{marginRight:120,float:'right'}}>删减</Button>}
+															{item.state != '2' && item.state != '3' && <Button type='primary' onClick={()=>this.showModal(item.dd_id,'添加关联发票')} style={{marginRight:30,float:'right'}}>添加</Button>}
 														</ItemRightCon>
 													</RightWapper>
 												</div>

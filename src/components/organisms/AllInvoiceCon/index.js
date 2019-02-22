@@ -1033,17 +1033,6 @@ class AllInvoiceConMack extends React.Component{
                       }]
                     })(
                       <Input placeholder="请输入名称" style={{float:'left',width:250,margin:'8px 20px 0 80px'}}/>
-                      // <Select
-                      //   style={{float:'left',width:250,margin:'8px 20px 0 80px'}}
-                      //   showSearch                     
-                      //   placeholder="请输入名称"
-                      //   showArrow={false}
-                      //   filterOption={false}
-                      //   onSearch={this.handleSearch}
-                      //   onSelect={this.handleChange}
-                      // >
-                      //   {this.state.options}
-                      // </Select>
                     )}
                     </FormItem>
                 </div>

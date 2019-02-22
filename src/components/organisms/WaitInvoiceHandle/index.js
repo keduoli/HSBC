@@ -56,11 +56,14 @@ class WaitInvoiceHandle extends React.Component{
     }
   }
   render(){
-    const {detailList,msg,departUserList,navList,saveScan,formSaveScan,cancelFnc,imageId,deleteWaitInvoice,showSuccess,showError,goCheck,waitParam} = this.props;
+    const {msg,departUserList,navList,saveScan,formSaveScan,cancelFnc,imageId,deleteWaitInvoice,showSuccess,showError,goCheck,waitParam,customerList,drawdownList,contractList,getDrawdownList,getContractList} = this.props;
+    const detailList = this.props.detailList.invoice;
+    const {id} = this.props.detailList;
+    detailList.invoice_details = this.props.detailList.invoice_detail;
     return(
       <Modal style={{top:100}}
              visible
-             key={detailList.invoice_id}
+             key={detailList.id}
              onCancel={this.props.cancelFnc}
              width={1200}
              footer={null}
@@ -93,7 +96,7 @@ class WaitInvoiceHandle extends React.Component{
           <div style={{display:'flex',overflow:'hidden'}}>
             <InvoiceLeft>
               {
-                (detailList.fpzl=== '04' || detailList.fpzl=== '10' || detailList.fpzl=== '01' || detailList.fpzl=== '11') &&
+                (detailList.fpzl== '04' || detailList.fpzl== '10' || detailList.fpzl== '01' || detailList.fpzl== '11') &&
                 <Invoices navList={navList} scanData={detailList}/>
               }
               {
@@ -130,6 +133,14 @@ class WaitInvoiceHandle extends React.Component{
                                    goBack={this.props.goBack}
                                    imageId={imageId}
                                    memo={this.props.memo}
+                                   id={id}
+                                   getDrawdownList={getDrawdownList}
+                                   state={this.props.state}
+                                   showInvoiceHandle={this.props.showInvoiceHandle}
+                                   getContractList={getContractList}
+                                   customerList={customerList}
+                                   drawdownList={drawdownList}
+                                   contractList={contractList}
                                    checkList={this.state.checkList}
                                    waitConfirm={true}
                                    saveScan={saveScan}

@@ -5,8 +5,10 @@ class SpecialCheckPage extends React.Component{
   state = {
 
   }
-  componentWillMount(){
-    this.props.getCustomerList()
+  componentDidMount(){
+    if(this.props.navList && this.props.navList.role.indexOf('drawdown') > -1){
+      this.props.getCustomerList()
+    }
   }
   render(){
     const { customerList,checkSpecial,navList } = this.props;

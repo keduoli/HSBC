@@ -40,7 +40,7 @@ class ActionLogFilterMake extends React.Component{
   };
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { actionUserList,logType } = this.props;
+    const { actionUserList } = this.props;
     return(
       <div className="wait-table-filter" style={{marginBottom:15}}>
         <Form className="ant-advanced-search-form" style={{paddingTop:'1rem',marginBottom:'-5px'}}>
@@ -69,8 +69,8 @@ class ActionLogFilterMake extends React.Component{
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                   {
-                    actionUserList.list.map((el,index)=>{
-                      return <Option key={`${el.id}`}>{el.name}</Option>
+                    actionUserList.map((el,index)=>{
+                      return <Option key={`${el.id}`}>{el.realName+'('+el.userName+')'}</Option>
                     })
                   }
                 </Select>

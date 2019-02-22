@@ -396,10 +396,17 @@ class OcrManualMake extends React.Component{
                   {getFieldDecorator('je', {
                     initialValue:this.props.val===false?(ocrData.je?ocrData.je:''):this.props.val.je,
                     rules: [{
-                      required:true, message:'税前金额不能为空',whitespace:true,
-                    },{
-                      pattern: /^-?[0-9]+\.?[0-9]*$/, message: '金额格式错误'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('税前金额不能为空');
+                        }else if(value.length>11){
+                          callback('税前金额不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('税前金额只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:waitConfirm?180:260}} placeholder="请输入税前金额"/>
                   )}
@@ -416,10 +423,17 @@ class OcrManualMake extends React.Component{
                   {getFieldDecorator('bhje', {
                     initialValue:this.props.val===false?(ocrData.je?ocrData.je:''):this.props.val.je,
                     rules: [{
-                      required:true, message:'不含税价不能为空',whitespace:true,
-                    }, {
-                      pattern: /^[0-9]+\.?[0-9]*$/, message: '不含税价只能是数字或小数'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('不含税价不能为空');
+                        }else if(value.length>11){
+                          callback('不含税价不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('不含税价只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:waitConfirm?180:260}} placeholder="请输入不含税价"/>
                   )}
@@ -436,10 +450,17 @@ class OcrManualMake extends React.Component{
                   {getFieldDecorator('cjhj', {
                     initialValue:this.props.val===false?(ocrData.je?ocrData.je:''):this.props.val.cjhe,
                     rules: [{
-                      required:true, message:'车价合计不能为空',whitespace:true,
-                    }, {
-                      pattern: /^[0-9]+\.?[0-9]*$/, message: '车价合计只能是数字或小数'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('车价合计不能为空');
+                        }else if(value.length>11){
+                          callback('车价合计不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('车价合计只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:waitConfirm?180:260}} placeholder="请输入车价合计"/>
                   )}

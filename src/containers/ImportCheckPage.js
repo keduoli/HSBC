@@ -14,8 +14,10 @@ const mapStateToProps = state => ({
   customerList: fromData.getData(state,actions.RQ.CUSTOMER_LIST),
   drawdownList: fromData.getData(state,actions.RQ.DRAWDOWN_LIST),
   contractList: fromData.getData(state,actions.RQ.CONTRACT_LIST),
+  tabData: fromData.getTabData(state,actions.TAB_DATA),
 });
 const mapDispatchToProps = dispatch => ({
+  tabChange:(value) => dispatch(actions.tabChange(value)),
   getCheckHistory:(param,callBack) => dispatch(actions.request(actions.RQ.CHECK_HISTORY,"/ajax/excel/history",{
     params:param,
     success:(res)=>{

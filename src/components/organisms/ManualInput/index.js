@@ -275,10 +275,17 @@ class ManualInputMake extends React.Component{
                 <FormItem hasFeedback>
                   {getFieldDecorator('je', {
                     rules: [{
-                      required:true, message:'税前金额不能为空',whitespace:true,
-                    }, {
-                      pattern: /^-?[0-9]+\.?[0-9]*$/, message: '金额格式错误'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('税前金额不能为空');
+                        }else if(value.length>11){
+                          callback('税前金额不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('税前金额只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:300}} placeholder="请输入税前金额"/>
                   )}
@@ -294,10 +301,17 @@ class ManualInputMake extends React.Component{
                 <FormItem hasFeedback>
                   {getFieldDecorator('bhje', {
                     rules: [{
-                      required:true, message:'不含税价不能为空',whitespace:true,
-                    }, {
-                      pattern: /^[0-9]+\.?[0-9]*$/, message: '不含税价只能是数字或小数'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('不含税价不能为空');
+                        }else if(value.length>11){
+                          callback('不含税价不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('不含税价只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:300}} placeholder="请输入不含税价"/>
                   )}
@@ -313,10 +327,17 @@ class ManualInputMake extends React.Component{
                 <FormItem hasFeedback>
                   {getFieldDecorator('cjhj', {
                     rules: [{
-                      required:true, message:'车价合计不能为空',whitespace:true,
-                    }, {
-                      pattern: /^[0-9]+\.?[0-9]*$/, message: '车价合计只能是数字或小数'
-                    }],
+                      validator: (rule, value, callback)=>{
+                        if(!value){
+                          callback('车价合计不能为空');
+                        }else if(value.length>11){
+                          callback('车价合计不能超过11位');
+                        }else if(!(/^[0-9]+\.?[0-9]*$/).test(value)){
+                          callback('车价合计只能是数字或小数');
+                        }
+                        callback();
+                      },
+                    }]
                   })(
                     <Input style={{width:300}} placeholder="请输入车价合计"/>
                   )}

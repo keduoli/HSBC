@@ -95,6 +95,7 @@ class DepartTree extends React.Component {
                 this.props.deleteDepart(ids,()=>{
                   this.setState({rightMenu:''});
                   this.props.getList();
+                  this.props.departSelect();
                 });
               }}/>
             </MenuAction>
@@ -104,7 +105,7 @@ class DepartTree extends React.Component {
     })
   };
   addFnc = (ids) => {
-    return <Modal
+    return <Modal 
       title={<TitleSpan>增加子部门</TitleSpan>}
       onCancel = {()=>{this.setState({showAdd:''})}}
       style = {{textAlign:'center',top:200}}
@@ -115,30 +116,29 @@ class DepartTree extends React.Component {
     >
       <div style={{padding:'10px 20px'}}>
         <Input style={{width:'70%',display:"block",margin:"0 auto"}} placeholder="请输入部门名称" ref={ref=>this.addName = ref}/>
-        <Button style={{marginRight:'20px',marginTop:20}}>
-          <a href="javascript:;" onClick={()=>{
-            this.setState({showAdd:''})
-          }}>
+        <Button style={{marginRight:'20px',marginTop:20}}
+                onClick={()=>{
+                  this.setState({showAdd:''})
+                }}>
             取消
-          </a>
         </Button>
-        <Button type="primary" style={{marginTop:20}}>
-          <a href="javascript:;" onClick={()=>{
-            const name = this.addName.refs.input.value;
-            if(!name){
-              message.warning('请输入部门名称');return;
-            };
-            const param = {
-              name:name,
-              parent_id:ids,
-            };
-            this.props.addDepart(param,()=>{
-              this.setState({showAdd:'',rightMenu:''});
-              this.props.getList();
-            });
-          }}>
+        <Button type="primary" style={{marginTop:20}}
+                 onClick={()=>{
+                  const name = this.addName.refs.input.value;
+                  if(!name){
+                    message.warning('请输入部门名称');return;
+                  };
+                  const param = {
+                    name:name,
+                    parent_id:ids,
+                  };
+                  this.props.addDepart(param,()=>{
+                    this.setState({showAdd:'',rightMenu:''});
+                    this.props.getList();
+                    this.props.departSelect();
+                  });
+                }}>
             确定
-            </a>
           </Button>
       </div>
     </Modal>
@@ -155,34 +155,32 @@ class DepartTree extends React.Component {
     >
       <div style={{padding:'10px 20px'}}>
         <Input style={{width:'70%',display:"block",margin:"0 auto"}} placeholder="请输入部门名称" defaultValue={name} ref={ref=>this.editName = ref}/>
-        <Button style={{marginRight:'20px',marginTop:20}}>
-          <a href="javascript:;" onClick={()=>{
+        <Button style={{marginRight:'20px',marginTop:20}}
+                 onClick={()=>{
             this.setState({showEdit:''})
           }}>
             取消
-          </a>
         </Button>
-        <Button type="primary" style={{marginTop:20}}>
-          <a href="javascript:;" onClick={()=>{
-            const newName = this.editName.refs.input.value;
-            if(!newName){
-              message.warning('请输入部门名称');return;
-            }
-            if(name === newName){
-              this.setState({showEdit:'',rightMenu:''});return;
-            }
-            const param = {
-              name:newName,
-              id:ids,
-            };
-            this.props.editDepart(param,()=>{
-              this.setState({showEdit:'',rightMenu:''});
-              this.props.getList(this.props.listType);
-              this.props.departSelect();
-            });
-          }}>
+        <Button type="primary" style={{marginTop:20}}
+                onClick={()=>{
+                  const newName = this.editName.refs.input.value;
+                  if(!newName){
+                    message.warning('请输入部门名称');return;
+                  }
+                  if(name === newName){
+                    this.setState({showEdit:'',rightMenu:''});return;
+                  }
+                  const param = {
+                    name:newName,
+                    id:ids,
+                  };
+                  this.props.editDepart(param,()=>{
+                    this.setState({showEdit:'',rightMenu:''});
+                    this.props.getList(this.props.listType);
+                    this.props.departSelect();
+                  });
+                }}>
             确定
-          </a>
         </Button>
       </div>
     </Modal>

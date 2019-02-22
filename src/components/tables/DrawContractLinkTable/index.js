@@ -81,8 +81,13 @@ class DrawContractLinkTable extends React.Component{
 				total_je = Number(total_je)+Number(changeVal.used_amount);
 				selectArr.push({id:changeVal.id,used_amount:changeVal.used_amount})
 			}else{
-				total_je = Number(total_je)+Number(selectedRows[i].left_amount);
-				selectArr.push({id:selectedRows[i].id,used_amount:selectedRows[i].left_amount})
+				if(!this.props.drawdownUnlinkContract){
+					total_je = Number(total_je)+Number(selectedRows[i].left_amount);
+					selectArr.push({id:selectedRows[i].id,used_amount:selectedRows[i].left_amount})
+				}else{
+					total_je = Number(total_je)+Number(selectedRows[i].used_amount);
+					selectArr.push({id:selectedRows[i].id,used_amount:selectedRows[i].used_amount})
+				}
 			}
 		}
     this.setState({selectedRows,total_je,selectArr})
@@ -295,7 +300,7 @@ class DrawContractLinkTable extends React.Component{
 					{
 						selectedRowKeys.length>0 &&
 						<div style={{float:'left',fontSize:12,marginTop:5}}>
-							已勾选合同{selectedRowKeys.length}份，关联金额共计{this.state.total_je}元
+							已勾选合同{selectedRowKeys.length}份，关联金额共计{Number(this.state.total_je).toFixed(2)}元
 						</div>
 					}
 					<Pagination total={contractList.count}

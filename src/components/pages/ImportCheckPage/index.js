@@ -218,7 +218,17 @@ class ImportCheckPage extends React.Component{
                                         onCancel={()=>this.setState({checkingModal:''})}>
                                     <CheckWaringCon>
                                       <p>本次查验发票共计{data.totalNum}张，</p>
-                                      <p>本次查验成功发票共计{data.successNum}张，<Link to='invoice' onClick={()=>this.setState({checkingModal:''})}>点击查看</Link></p>
+                                      <p>本次查验成功发票共计{data.successNum}张，<Link to='invoice' onClick={()=>{
+                                        this.setState({checkingModal:''})
+                                        const list = this.props.tabData.list;
+                                        let a = list.find(el=>el.key==='invoice');
+                                        if(!a){
+                                            list.push({title:'发票查询',key:'invoice'})
+                                            this.props.tabChange({list:list,activeKey:'invoice'})
+                                        }else{
+                                            this.props.tabChange({list:list,activeKey:'invoice'})
+                                        }
+                                      }}>点击查看</Link></p>
                                       <p>本次查验失败发票共计{data.failedNum}张，<a href={'/ajax/excel/export/'+data.id}>点击下载查验历史</a></p>
                                       <p>可稍后查看历史记录</p>
                                       <Button style={{marginTop:20}} onClick={()=>this.setState({checkingModal:''})}>收起</Button>

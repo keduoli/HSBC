@@ -68,7 +68,7 @@ class ScanSuccess extends React.Component{
         <InvoiceCons>
           <InvoiceLeft>
             {
-              (scanData.fpzl=== '04' || scanData.fpzl=== '10' || scanData.fpzl=== '01' || scanData.fpzl=== '11') &&
+              (scanData.fpzl== '04' || scanData.fpzl== '10' || scanData.fpzl== '01' || scanData.fpzl== '11') &&
               <Invoices scanData={scanData}/>
             }
             {
